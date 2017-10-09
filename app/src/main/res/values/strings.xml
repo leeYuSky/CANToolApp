@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">CANToolApp</string>
+    <string name="app_name">Bluetooth</string>
+    <string name="title">蓝牙设置</string>
+    <string name="open">打开蓝牙</string>
 </resources>
