@@ -1,4 +1,4 @@
-package com.example.liyuze.cantoolapp.mvp.mvpView;
+package com.example.liyuze.cantoolapp.mvp.view.mvpView;
 
 /**
  * Created by liyuze on 17/10/5.

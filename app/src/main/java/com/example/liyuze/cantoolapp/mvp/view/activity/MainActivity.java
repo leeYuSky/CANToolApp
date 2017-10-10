@@ -1,4 +1,4 @@
-package com.example.liyuze.cantoolapp;
+package com.example.liyuze.cantoolapp.mvp.view.activity;
 
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
@@ -17,6 +17,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.liyuze.cantoolapp.R;
 
 import java.util.Set;
 
