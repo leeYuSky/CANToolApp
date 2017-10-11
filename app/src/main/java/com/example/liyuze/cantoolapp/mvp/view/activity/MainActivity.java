@@ -63,24 +63,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        // 申请权限 http://blog.csdn.net/lqhed/article/details/52266507
-        // http://blog.csdn.net/TSX_xiaoxiong/article/details/53156964
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            int permissionCheck = 0;
-            permissionCheck = this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
-            permissionCheck += this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
-            if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-                //注册权限
-                this.requestPermissions(
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                                Manifest.permission.ACCESS_COARSE_LOCATION},
-                        ACCESS_LOCATION); //Any number
-                Log.e(TAG,"权限获取成功");
-            }else{//已获得过权限
-                //进行蓝牙设备搜索操作
-                Log.e(TAG,"已经获得权限");
-            }
-        }
+        getLocationPermissons();
 
         // 获取本地蓝牙适配器
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -198,6 +181,33 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 break;
+        }
+    }
+
+    /*
+     * @Author : liyuze
+     * @Time : 17/10/11 下午7:19
+     * @Description : 获取 位置 权限
+     * */
+    private void getLocationPermissons(){
+        // 申请权限
+        // http://blog.csdn.net/lqhed/article/details/52266507
+        // http://blog.csdn.net/TSX_xiaoxiong/article/details/53156964
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            int permissionCheck = 0;
+            permissionCheck = this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+            permissionCheck += this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
+            if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                //注册权限
+                this.requestPermissions(
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                                Manifest.permission.ACCESS_COARSE_LOCATION},
+                        ACCESS_LOCATION); //Any number
+                Log.e(TAG,"权限获取成功");
+            }else{//已获得过权限
+                //进行蓝牙设备搜索操作
+                Log.e(TAG,"已经获得权限");
+            }
         }
     }
 
