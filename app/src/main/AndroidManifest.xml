@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".mvp.view.activity.MainActivity"
-            android:configChanges="orientation|keyboardHidden"
+
             android:label="@string/main_title">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,7 +27,7 @@
             android:name=".mvp.view.activity.DeviceListActivity"
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/select_device_title"
-            android:theme="@android:style/Theme.Light"
+            android:theme="@style/Theme.AppCompat.Light.Dialog"
             />
     </application>
 

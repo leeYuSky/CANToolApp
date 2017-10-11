@@ -166,7 +166,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.add_item:
-                Toast.makeText(this,"You clicked add",Toast.LENGTH_LONG).show();
+                Intent serverIntent = new Intent(MainActivity.this, DeviceListActivity.class);
+                startActivity(serverIntent);
                 break;
             case R.id.remove_item:
                 Toast.makeText(this,"You clicked remove",Toast.LENGTH_LONG).show();
