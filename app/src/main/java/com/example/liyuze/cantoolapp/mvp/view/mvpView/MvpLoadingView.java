@@ -6,6 +6,7 @@ package com.example.liyuze.cantoolapp.mvp.view.mvpView;
 
 public interface MvpLoadingView {
 
+    
     void showLoading();
     void hideLoading();
 }
