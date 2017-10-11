@@ -6,6 +6,7 @@ package com.example.liyuze.cantoolapp.mvp.view.mvpView;
 
 public interface MvpMainView extends MvpLoadingView{
 
+    
     void showToast(String msg);
     void updateView();
 
