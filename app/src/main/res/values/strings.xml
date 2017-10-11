@@ -2,4 +2,15 @@
     <string name="app_name">Bluetooth</string>
     <string name="title">蓝牙设置</string>
     <string name="open">打开蓝牙</string>
+
+    <!-- AndroidManifest  -->
+
+    <string name="select_device_title">Select a device to connect</string>
+    <string name="main_title">CANTool</string>
+
+    <!-- DeviceListActivity -->
+    <string name="title_paired_devices">Paired Devices</string>
+    <string name="title_other_devices">Other Available Devices</string>
+    <string name="button_scan">Scan for devices</string>
+
 </resources>
