@@ -68,3 +68,20 @@
             android:text="@string/_set_notifycation" />
     </RelativeLayout>
 </LinearLayout>
+package com.example.speeddemo;
+import android.animation.ValueAnimator;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.DashPathEffect;
+import android.graphics.LinearGradient;
+import android.graphics.Paint;
+import android.graphics.RectF;
+import android.graphics.Shader;
+import android.util.AttributeSet;
+import android.view.View;
+/**
+ * Created by admin on 2016/8/28.
+ */
