@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/bluetooth_item"
+        android:title="Bluetooth"
+        android:icon="@mipmap/ic_bluetooth2"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/add_item"
+        android:title="Add"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/remove_item"
+        android:title="Remove"
+        android:icon="@mipmap/ic_launcher_round"
+        app:showAsAction="never"/>
+</menu>

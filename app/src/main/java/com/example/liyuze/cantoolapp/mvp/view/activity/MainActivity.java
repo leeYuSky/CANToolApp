@@ -12,7 +12,10 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -37,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int ACCESS_LOCATION = 1001;
 
-    private final BroadcastReceiver receiver = new BroadcastReceiver() {
+/*    private final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
@@ -54,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(TAG,"方法三");
             }
         }
-    };
+    };*/
 
 
     @Override
@@ -62,8 +65,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        getLocationPermissons();
+
+        /*getLocationPermissons();
 
         // 获取本地蓝牙适配器
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -144,12 +150,31 @@ public class MainActivity extends AppCompatActivity {
                     mBluetoothAdapter.startDiscovery();
                 }
             }
-        });
+        });*/
 
 
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.add_item:
+                Toast.makeText(this,"You clicked add",Toast.LENGTH_LONG).show();
+                break;
+            case R.id.remove_item:
+                Toast.makeText(this,"You clicked remove",Toast.LENGTH_LONG).show();
+                break;
+            default:
+        }
+        return true;
+    }
 
     public void showToast(String msg){
         Toast.makeText(this,msg,Toast.LENGTH_LONG).show();
