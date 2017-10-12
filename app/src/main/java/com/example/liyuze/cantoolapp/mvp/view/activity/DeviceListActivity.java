@@ -101,10 +101,10 @@ public class DeviceListActivity extends AppCompatActivity {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     device.createBond();
                     Log.d(TAG,"与远程设备 " + phone.getName() + " 连接成功，其 MAC 地址为 :" + phone.getMAC());
-                    pairedList.add(phone);
-                    scannedList.remove(position);
-                    scannedAdapter.notifyDataSetChanged();
-                    pairedAdapter.notifyDataSetChanged();
+//                    pairedList.add(phone);
+//                    scannedList.remove(position);
+//                    scannedAdapter.notifyDataSetChanged();
+//                    pairedAdapter.notifyDataSetChanged();
                 } else {
                     Log.e(TAG,"与远程设备 " + phone.getName() + " 连接失败!!!");
                 }
@@ -114,7 +114,7 @@ public class DeviceListActivity extends AppCompatActivity {
         // 设置广播信息过滤
         IntentFilter filter = new IntentFilter();
         filter.addAction(BluetoothDevice.ACTION_FOUND);//每搜索到一个设备就会发送一个该广播
-
+        filter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);//当全部搜索完后发送该广播
         filter.setPriority(Integer.MAX_VALUE);//设置优先级
         // 注册蓝牙搜索广播接收者，接收并处理搜索结果
@@ -183,15 +183,35 @@ public class DeviceListActivity extends AppCompatActivity {
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
-                    scannedList.add(new PhoneInfo(device.getName(),device.getAddress()));
+                    PhoneInfo temp = new PhoneInfo(device.getName(),device.getAddress());
+                    if(!scannedList.contains(temp) && !pairedList.contains(temp)) {
+                        scannedList.add(temp);
+                        scannedAdapter.notifyDataSetChanged();
+                    }
                 }
             } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                 //已搜素完成
                 setTitle(R.string.select_device_title);
                 scan_button.setText("Scan for devices");
                 // TODO
-            } else if(action.equals("android.bluetooth.device.action.PAIRING_REQUEST")){
+            } else if(BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(action)){
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                int connectState = device.getBondState();
+                switch (connectState){
+                    case BluetoothDevice.BOND_NONE:
+                        break;
+                    case BluetoothDevice.BOND_BONDING:
+                        break;
+                    case BluetoothDevice.BOND_BONDED:
+                        PhoneInfo tempPhone = new PhoneInfo(device.getName(),device.getAddress());
+                        pairedList.add(tempPhone);
+                        scannedList.remove(tempPhone);
+                        scannedAdapter.notifyDataSetChanged();
+                        pairedAdapter.notifyDataSetChanged();
+                        break;
+                    default:
 
+                }
             }
         }
     };
