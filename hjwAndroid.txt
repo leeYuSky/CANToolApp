@@ -83,5 +83,20 @@ import android.graphics.Shader;
 import android.util.AttributeSet;
 import android.view.View;
 /**
- * Created by admin on 2016/8/28.
+ * Created by admin on 2017/10/12
  */
+ public class CarRecorderView extends View {
+    private static final String TAG = "CarRecorderView" ;
+    private LinearGradient linearGradient = null;
+    private Paint blackCirclePaint;
+    private int blackCirClePaintWidth = 8;
+
+    private Paint arcAnimPaint;
+    private Paint outerAnimPaint;
+    private Paint whiteCirclePaint ;
+    private Paint unitTextPaint;
+    private int whiteCirclePaintWidth = 24;
+    private Paint outerPaint;
+    private Paint linePaint;
+    private Paint textValuePaint;
+    private Paint interprogressPaint;
