@@ -32,7 +32,12 @@ public class PhoneAdapter extends ArrayAdapter<PhoneInfo> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
         PhoneInfo phone = getItem(position);
-        View view = LayoutInflater.from(getContext()).inflate(resourceId,parent,false);
+        View view;
+        if(convertView == null) {
+            view = LayoutInflater.from(getContext()).inflate(resourceId, parent, false);
+        }else{
+            view = convertView;
+        }
         TextView phoneName = view.findViewById(R.id.phone_name);
         phoneName.setText(phone.getName());
         return view;

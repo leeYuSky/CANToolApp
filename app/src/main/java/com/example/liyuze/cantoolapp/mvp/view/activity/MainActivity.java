@@ -46,26 +46,6 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int ACCESS_LOCATION = 1001;
 
-/*    private final BroadcastReceiver receiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            Log.e(TAG,"方法零");
-            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-                Log.e(TAG,"方法一");
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
-                    mResult_text.append(device.getName() + " : "+ device.getAddress() + System.getProperty("line.separator"));
-                    Log.e(TAG,"方法二");
-                }
-            } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
-                //已搜素完成
-                Log.e(TAG,"方法三");
-            }
-        }
-    };*/
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,98 +56,13 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setSubtitle("hahaha");
         setSupportActionBar(toolbar);
 
-//        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-//        if(mBluetoothAdapter == null){
-//            showToast("This device's bluetooth is not available");
-//            finish();
-//        }
-
-        getLocationPermissons();
-
-
-        /*getLocationPermissons();
-
-        // 获取本地蓝牙适配器
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        // 判断蓝牙功能是否存在
         if(mBluetoothAdapter == null){
-            showToast("该设备不支持蓝牙");
-            return;
+            showToast("This device's bluetooth is not available");
+            finish();
         }
 
-        // 获取名字 MAC地址
-        String name = mBluetoothAdapter.getName();
-        String MAC = mBluetoothAdapter.getAddress();
-
-        Log.e(TAG,"name : " +name + " -- " + "mac : " + MAC);
-
-        // 获取当前蓝牙状态
-
-        int state = mBluetoothAdapter.getState();
-
-        mButtonOpenBt = (Button) this.findViewById(R.id.btn_open_bt);
-
-        mResult_text = (TextView) this.findViewById(R.id.result_text);
-
-        mButtonStartSearch = (Button) this.findViewById(R.id.btn_start_search);
-
-
-
-        // 设置广播信息过滤
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(BluetoothDevice.ACTION_FOUND);//每搜索到一个设备就会发送一个该广播
-
-        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);//当全部搜索完后发送该广播
-        filter.setPriority(Integer.MAX_VALUE);//设置优先级
-        // 注册蓝牙搜索广播接收者，接收并处理搜索结果
-        this.registerReceiver(receiver, filter);
-
-
-
-
-
-        mButtonOpenBt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(mBluetoothAdapter.isEnabled()){
-                    showToast("蓝牙已经处于打开状态...");
-                    // 关闭蓝牙
-                    boolean isClose = mBluetoothAdapter.disable();
-
-                    Log.e(TAG,"蓝牙是否关闭:"+isClose);
-
-                }else{
-                    // 打开蓝牙
-//                    boolean isOpen = mBluetoothAdapter.enable();
-
-                    // 调用系统 API 打开
-                    Intent open = new Intent(mBluetoothAdapter.ACTION_REQUEST_ENABLE);
-                    startActivityForResult(open,REQUEST_OPEN_BT);
-
-
-                }
-            }
-        });
-
-        mButtonStartSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
-                if (pairedDevices.size() > 0) {
-                    for (BluetoothDevice device : pairedDevices) {
-                        mResult_text.append(device.getName() + " : " + device.getAddress()+System.getProperty("line.separator"));
-                    }
-                }
-
-                if (mBluetoothAdapter.isDiscovering()) {
-                    mBluetoothAdapter.cancelDiscovery();
-                }else {
-                    //开启搜索
-                    mBluetoothAdapter.startDiscovery();
-                }
-            }
-        });*/
-
+        getLocationPermissons();
 
 
     }
@@ -176,15 +71,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-//        if (!mBluetoothAdapter.isEnabled()) {
-//            // 调用系统 API 打开蓝牙
-//            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-//            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
-//            // Otherwise, setup the chat session
-//        } else if (mBluetoothPresenter == null) {
-//
-//            setupPresenter();
-//        }
+        if (!mBluetoothAdapter.isEnabled()) {
+            // 调用系统 API 打开蓝牙
+            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+            // Otherwise, setup the chat session
+        } else if (mBluetoothPresenter == null) {
+
+            setupPresenter();
+        }
     }
 
     public void showToast(String msg){
