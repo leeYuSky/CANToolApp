@@ -3,6 +3,8 @@ package com.example.liyuze.cantoolapp.mvp.presenter;
 import android.bluetooth.BluetoothAdapter;
 import android.util.Log;
 
+import com.example.liyuze.cantoolapp.mvp.MyApplication.MyApplication;
+import com.example.liyuze.cantoolapp.mvp.view.activity.MainActivity;
 import com.example.liyuze.cantoolapp.mvp.view.mvpView.MvpMainView;
 
 import java.util.UUID;
@@ -21,18 +23,12 @@ public class BluetoothPresenter {
 
     BluetoothAdapter mBluetoothAdapter;
 
-
-    BluetoothPresenter(MvpMainView mvpMainView){
+    public BluetoothPresenter(MvpMainView mvpMainView){
         this.mvpMainView = mvpMainView;
     }
 
     private void setUp(){
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
-        if(mBluetoothAdapter == null){
-            mvpMainView.showToast("该设备不支持蓝牙");
-            return;
-        }
 
 
     }
