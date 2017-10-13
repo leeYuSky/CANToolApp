@@ -20,7 +20,7 @@ import java.io.OutputStream;
 import java.util.UUID;
 
 /**
- * Created by liyuze on 17/10/11.
+ * Created by magic on 17/10/11.
  */
 
 public class BluetoothPresenter {
@@ -277,7 +277,7 @@ public class BluetoothPresenter {
 
 
     /**
-     * @Author : liyuze
+     * @Author : magic
      * @Time : 17/10/12 下午8:20
      * @Description :
      * This thread runs while listening for incoming connections. It behaves
