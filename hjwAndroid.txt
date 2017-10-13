@@ -7,6 +7,7 @@
     android:orientation="vertical"
     tools:context="bzu.edu.cn.phoneinfo.MainActivity">
 
+
    <RelativeLayout style="@style/h_wrap_content"
        android:layout_marginTop="10dp">
        <TextView
@@ -22,6 +23,7 @@
            android:drawableTop="@drawable/bluetooth"
            android:text="@string/_bluetooth"/>
     </RelativeLayout>
+    
     <RelativeLayout style="@style/h_wrap_content"
         android:layout_marginTop="10dp">
     <TextView
@@ -37,6 +39,7 @@
             android:drawableTop="@drawable/gps"
             android:text="@string/_gps" />
     </RelativeLayout>
+    
     <RelativeLayout style="@style/h_wrap_content"
         android:layout_marginTop="10dp">
         <TextView
@@ -52,6 +55,7 @@
             android:drawableTop="@drawable/internet"
             android:text="@string/_internet" />
     </RelativeLayout>
+    
     <RelativeLayout style="@style/h_wrap_content"
         android:layout_marginTop="10dp">
         <TextView
@@ -67,6 +71,7 @@
             android:drawableTop="@drawable/notifycation"
             android:text="@string/_set_notifycation" />
     </RelativeLayout>
+    
 </LinearLayout>
 package com.example.speeddemo;
 import android.animation.ValueAnimator;
