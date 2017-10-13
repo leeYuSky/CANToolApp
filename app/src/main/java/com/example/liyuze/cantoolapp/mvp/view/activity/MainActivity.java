@@ -1,6 +1,7 @@
 package com.example.liyuze.cantoolapp.mvp.view.activity;
 
 import android.Manifest;
+import android.app.ActionBar;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -9,19 +10,28 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.liyuze.cantoolapp.R;
+import com.example.liyuze.cantoolapp.mvp.constants.Constants;
 import com.example.liyuze.cantoolapp.mvp.presenter.BluetoothPresenter;
 import com.example.liyuze.cantoolapp.mvp.view.mvpView.MvpMainView;
 
@@ -30,29 +40,36 @@ import java.util.Set;
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "MainActivity";
+
     public static final int REQUEST_ENABLE_BT = 1; // 请求打开蓝牙
 
     public static final int REQUEST_CONNECT_DEVICE = 2;
 
-    Button mButtonOpenBt;
 
     BluetoothAdapter mBluetoothAdapter;
 
-    TextView mResult_text;
-
-    Button mButtonStartSearch;
 
     BluetoothPresenter mBluetoothPresenter;
 
     private static final int ACCESS_LOCATION = 1001;
+
+    Toolbar toolbar;
+
+    // Layout Views
+    private ListView mConversationView;
+    private EditText mOutEditText;
+    private Button mSendButton;
+    private ArrayAdapter<String> mConversationArrayAdapter;
+    private String mConnectedDeviceName = null;
+    private StringBuffer mOutStringBuffer;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setSubtitle("No device connected");
         setSupportActionBar(toolbar);
 
@@ -63,6 +80,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         getLocationPermissons();
+
+        mConversationView = (ListView) findViewById(R.id.in);
+        mOutEditText = (EditText) findViewById(R.id.edit_text_out);
+        mSendButton = (Button) findViewById(R.id.button_send);
 
 
     }
@@ -82,33 +103,59 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mBluetoothPresenter != null) {
+            // Only if the state is STATE_NONE, do we know that we haven't started already
+            if (mBluetoothPresenter.getState() == BluetoothPresenter.STATE_NONE) {
+                // Start the Bluetooth chat services
+                mBluetoothPresenter.start();
+            }
+        }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mBluetoothPresenter != null) {
+            mBluetoothPresenter.stop();
+        }
+    }
+
     public void showToast(String msg){
         Toast.makeText(this,msg,Toast.LENGTH_LONG).show();
     }
 
     public void setupPresenter(){
-        mBluetoothPresenter = new BluetoothPresenter(new MvpMainView(){
+        Log.d(TAG, "setupPresenter()");
 
+        mConversationArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
+        mConversationView.setAdapter(mConversationArrayAdapter);
+
+        mOutEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void showToast(String msg) {
-
-            }
-
-            @Override
-            public void updateView() {
-
-            }
-
-            @Override
-            public void showLoading() {
-
-            }
-
-            @Override
-            public void hideLoading() {
-
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_NULL && event.getAction() == KeyEvent.ACTION_UP) {
+                    String message = v.getText().toString();
+                    sendMessage(message);
+                }
+                return true;
             }
         });
+
+        mSendButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Send a message using content of the edit text widget
+                    TextView textView = (TextView) findViewById(R.id.edit_text_out);
+                    String message = textView.getText().toString();
+                    sendMessage(message);
+            }
+        });
+
+        mBluetoothPresenter = new BluetoothPresenter(mHandler);
+        mOutStringBuffer = new StringBuffer("");
     }
 
     /*
@@ -150,13 +197,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-//        if(REQUEST_OPEN_BT == requestCode){
-//            if(resultCode == RESULT_CANCELED){
-//                showToast("请求失败");
-//            }else{
-//                showToast("请求成功");
-//            }
-//        }
+
         switch (requestCode){
             case REQUEST_ENABLE_BT:
                 if(resultCode == RESULT_OK){
@@ -168,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case REQUEST_CONNECT_DEVICE:
                 if(resultCode == RESULT_OK){
-
+                    connectDevice(data);
                 }
             default:
 
@@ -227,6 +268,103 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return true;
+    }
+
+
+
+
+
+
+    private final Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case Constants.MESSAGE_STATE_CHANGE:
+                    switch (msg.arg1) {
+                        case BluetoothPresenter.STATE_CONNECTED:
+                            setStatus(getString(R.string.title_connected_to, mConnectedDeviceName));
+                            mConversationArrayAdapter.clear();
+                            break;
+                        case BluetoothPresenter.STATE_CONNECTING:
+                            setStatus(R.string.title_connecting);
+                            break;
+                        case BluetoothPresenter.STATE_LISTEN:
+                        case BluetoothPresenter.STATE_NONE:
+                            setStatus(R.string.title_not_connected);
+                            break;
+                    }
+                    break;
+                case Constants.MESSAGE_WRITE:
+                    byte[] writeBuf = (byte[]) msg.obj;
+                    // construct a string from the buffer
+                    String writeMessage = new String(writeBuf);
+                    mConversationArrayAdapter.add("Me:  " + writeMessage);
+                    break;
+                case Constants.MESSAGE_READ:
+                    byte[] readBuf = (byte[]) msg.obj;
+                    // construct a string from the valid bytes in the buffer
+                    String readMessage = new String(readBuf, 0, msg.arg1);
+                    char temp = readMessage.charAt(0);
+                    if(temp == '\r')
+                    {
+                        readMessage = "OK";
+                    }
+                    else if((int) temp == 7 )
+                    {
+                        readMessage = "Error";
+                    }
+                    mConversationArrayAdapter.add(mConnectedDeviceName + ":  " + readMessage);
+                    break;
+                case Constants.MESSAGE_DEVICE_NAME:
+                    // save the connected device's name
+                    mConnectedDeviceName = msg.getData().getString(Constants.DEVICE_NAME);
+                        Toast.makeText(MainActivity.this, "Connected to "
+                                + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
+                    break;
+                case Constants.MESSAGE_TOAST:
+                        Toast.makeText(MainActivity.this, msg.getData().getString(Constants.TOAST),Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+    };
+
+    private void sendMessage(String message) {
+        // Check that we're actually connected before trying anything
+        if (mBluetoothPresenter.getState() != BluetoothPresenter.STATE_CONNECTED) {
+            Toast.makeText(this, R.string.not_connected, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Check that there's actually something to send
+        if (message.length() > 0) {
+            // Get the message bytes and tell the BluetoothChatService to write
+            message += "\r";
+            byte[] send = message.getBytes();
+            mBluetoothPresenter.write(send);
+
+            // Reset out string buffer to zero and clear the edit text field
+            mOutStringBuffer.setLength(0);
+            mOutEditText.setText(mOutStringBuffer);
+        }
+    }
+
+    private void setStatus(int resId) {
+
+        toolbar.setSubtitle(resId);
+    }
+
+    private void setStatus(CharSequence subTitle) {
+        toolbar.setSubtitle(subTitle);
+    }
+
+    private void connectDevice(Intent data) {
+        // Get the device MAC address
+        String address = data.getExtras()
+                .getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
+        // Get the BluetoothDevice object
+        BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
+        // Attempt to connect to the device
+        mBluetoothPresenter.connect(device);
     }
 
 
