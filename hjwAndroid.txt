@@ -100,3 +100,24 @@ import android.view.View;
     private Paint linePaint;
     private Paint textValuePaint;
     private Paint interprogressPaint;
+ private int lineWidth = 5;
+    private Paint outerSmallPaint;
+    private RectF outerRectF;
+    private RectF outerAnimRectF ;
+    private Bitmap carBitmap;
+
+    private int width;
+    private int height;
+
+    private int min = 0;
+    private float value;
+    private long duration = 1000;
+    private long progressDelay = 350;
+    private int startAngle = 140;//开始的角度
+    private float plusAngle = 0;//经过的角度
+    private float maxAngle = 260f;//最大的角度
+    private float outerProgressValue = min;
+    private float lineInitValue = min;
+    private int max = 100;//最大进度值
+    private ValueAnimator lineAnim;
+    private ValueAnimator outerProgressAnim;
