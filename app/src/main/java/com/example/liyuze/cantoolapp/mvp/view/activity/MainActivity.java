@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
@@ -32,9 +33,17 @@ import android.widget.Toast;
 
 import com.example.liyuze.cantoolapp.R;
 import com.example.liyuze.cantoolapp.mvp.constants.Constants;
+import com.example.liyuze.cantoolapp.mvp.model.signal;
 import com.example.liyuze.cantoolapp.mvp.presenter.BluetoothPresenter;
+import com.example.liyuze.cantoolapp.mvp.utils.datatableUtil;
 import com.example.liyuze.cantoolapp.mvp.view.mvpView.MvpMainView;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
@@ -73,56 +82,71 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setSubtitle("No device connected");
         setSupportActionBar(toolbar);
 
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if(mBluetoothAdapter == null){
-            showToast("This device's bluetooth is not available");
-            finish();
-        }
+        datatableUtil.read(this,new String[]{
+                "canmsg-sample.txt",
+                "PowerTrain.txt",
+                "Comfort.txt"
+        });
 
-        getLocationPermissons();
-
-        mConversationView = (ListView) findViewById(R.id.in);
-        mOutEditText = (EditText) findViewById(R.id.edit_text_out);
-        mSendButton = (Button) findViewById(R.id.button_send);
-
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        if (!mBluetoothAdapter.isEnabled()) {
-            // 调用系统 API 打开蓝牙
-            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
-            // Otherwise, setup the chat session
-        } else if (mBluetoothPresenter == null) {
-
-            setupPresenter();
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (mBluetoothPresenter != null) {
-            // Only if the state is STATE_NONE, do we know that we haven't started already
-            if (mBluetoothPresenter.getState() == BluetoothPresenter.STATE_NONE) {
-                // Start the Bluetooth chat services
-                mBluetoothPresenter.start();
+        for(Map.Entry<String,List<signal>> entry : Constants.DATATABLE.entrySet()){
+            Log.e(TAG,entry.getKey());
+            for(signal s : entry.getValue()){
+                Log.e(TAG,"   " + s.toString());
             }
         }
 
+
+
+//        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+//        if(mBluetoothAdapter == null){
+//            showToast("This device's bluetooth is not available");
+//            finish();
+//        }
+//
+//        getLocationPermissons();
+//
+//        mConversationView = (ListView) findViewById(R.id.in);
+//        mOutEditText = (EditText) findViewById(R.id.edit_text_out);
+//        mSendButton = (Button) findViewById(R.id.button_send);
+
+
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mBluetoothPresenter != null) {
-            mBluetoothPresenter.stop();
-        }
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//
+//        if (!mBluetoothAdapter.isEnabled()) {
+//            // 调用系统 API 打开蓝牙
+//            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+//            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+//            // Otherwise, setup the chat session
+//        } else if (mBluetoothPresenter == null) {
+//
+//            setupPresenter();
+//        }
+//    }
+//
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        if (mBluetoothPresenter != null) {
+//            // Only if the state is STATE_NONE, do we know that we haven't started already
+//            if (mBluetoothPresenter.getState() == BluetoothPresenter.STATE_NONE) {
+//                // Start the Bluetooth chat services
+//                mBluetoothPresenter.start();
+//            }
+//        }
+//
+//    }
+//
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        if (mBluetoothPresenter != null) {
+//            mBluetoothPresenter.stop();
+//        }
+//    }
 
     public void showToast(String msg){
         Toast.makeText(this,msg,Toast.LENGTH_LONG).show();

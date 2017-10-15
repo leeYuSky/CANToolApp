@@ -16,10 +16,17 @@
 
 package com.example.liyuze.cantoolapp.mvp.constants;
 
+import com.example.liyuze.cantoolapp.mvp.model.signal;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
- * Defines several constants used between {@link BluetoothChatService} and the UI.
+ * Defines several constants used between and the UI.
  */
-public interface Constants {
+public class Constants {
 
     // Message types sent from the BluetoothChatService Handler
     public static final int MESSAGE_STATE_CHANGE = 1;
@@ -31,5 +38,8 @@ public interface Constants {
     // Key names received from the BluetoothChatService Handler
     public static final String DEVICE_NAME = "device_name";
     public static final String TOAST = "toast";
+
+    // 对照数据表
+    public static Map<String,List<signal>> DATATABLE = new HashMap<>();
 
 }

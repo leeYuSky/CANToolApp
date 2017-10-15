@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by magic on 17/10/14.
+ * Created by liyuze on 17/10/14.
  */
 
 public class CANMessageUtil {

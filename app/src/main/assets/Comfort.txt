@@ -1,0 +1,55 @@
+TP_Dashboard: 1541 6 data 0 48 1 1.0 0.0 0.0 0.0 ""
+
+Diag_Request: 1792 8
+
+Diag_Response: 1536 8
+
+DiagResponse_Motor: 1537 8 data 0 64 1 1.0 0.0 0.0 0.0 ""
+
+DiagResponse_DoorLeft: 1543 8 data 0 64 1 1.0 0.0 0.0 0.0 ""
+
+DiagRequest: 1542 8 data 0 64 1 1.0 0.0 0.0 0.0 ""
+
+TP_Console: 1540 6 data 0 48 1 1.0 0.0 0.0 0.0 ""
+
+NM_Gateway: 1053 4 SleepInd 12 1 1 1.0 0.0 0.0 0.0 ""
+
+NM_DOORright: 1052 4 SleepInd 12 1 1 1.0 0.0 0.0 0.0 ""
+
+NM_DOORleft: 1051 4 SleepInd 12 1 1 1.0 0.0 0.0 0.0 ""
+
+NM_Console: 1050 4 SleepInd 12 1 1 1.0 0.0 0.0 0.0 ""
+
+DOOR_r: 497 1 WN_Position 0 8 1 1.0 0.0 0.0 100.0 ""
+
+DOOR_l: 496 1 WN_Position 0 8 1 1.0 0.0 0.0 100.0 ""
+
+Console_2: 417 2 Phase 8 1 1 1.0 0.0 0.0 0.0 ""
+Console_2: 417 2 Active 1 2 1 1.0 0.0 0.0 0.0 ""
+Console_2: 417 2 Light 0 1 1 1.0 0.0 0.0 1.0 ""
+
+Console_1: 416 4 WN_right_up 30 1 1 1.0 0.0 0.0 0.0 ""
+Console_1: 416 4 WN_right_down 29 1 1 1.0 0.0 0.0 0.0 ""
+Console_1: 416 4 WN_left_up 26 1 1 1.0 0.0 0.0 0.0 ""
+Console_1: 416 4 WN_left_down 25 1 1 1.0 0.0 0.0 0.0 ""
+Console_1: 416 4 Mirror_r2d 7 1 1 1.0 0.0 0.0 0.0 ""
+Console_1: 416 4 Mirror_r2u 6 1 1 1.0 0.0 0.0 0.0 ""
+Console_1: 416 4 Mirror_r2r 5 1 1 1.0 0.0 0.0 0.0 ""
+Console_1: 416 4 Mirror_r2l 4 1 1 1.0 0.0 0.0 0.0 ""
+Console_1: 416 4 Mirror_l2d 3 1 1 1.0 0.0 0.0 0.0 ""
+Console_1: 416 4 Mirror_l2u 2 1 1 1.0 0.0 0.0 0.0 ""
+Console_1: 416 4 Mirror_l2r 1 1 1 1.0 0.0 0.0 0.0 ""
+Console_1: 416 4 Mirror_l2l 0 1 1 1.0 0.0 0.0 0.0 ""
+
+Gateway_2: 273 8 Voltage 48 10 1 0.1 0.0 0.0 102.3 "V"
+Gateway_2: 273 8 PetrolLevel 40 8 1 1.0 0.0 0.0 0.0 ""
+Gateway_2: 273 8 EngSpeed 24 16 1 1.0 0.0 0.0 0.0 ""
+Gateway_2: 273 8 CarSpeed 8 16 1 0.5 0.0 0.0 300.0 ""
+Gateway_2: 273 8 EngineTemp 0 8 1 1.0 0.0 0.0 0.0 ""
+
+Gateway_1: 272 3 EngineRunning 7 1 1 1.0 0.0 0.0 0.0 ""
+Gateway_1: 272 3 Ig_15 2 1 1 1.0 0.0 0.0 0.0 ""
+Gateway_1: 272 3 Ig_15R 1 1 1 1.0 0.0 0.0 0.0 ""
+Gateway_1: 272 3 StarterKey 0 1 1 1.0 0.0 0.0 1.0 ""
+
+DebugMsg1: 256 8
