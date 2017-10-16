@@ -151,3 +151,16 @@ import android.view.View;
     /**
      * 初始化画笔
      */
+	 
+    private void initPaint() {
+        arcAnimPaint = new Paint();
+        arcAnimPaint.setStrokeWidth(12);
+        arcAnimPaint.setColor(Color.parseColor("#1C86EE"));
+        arcAnimPaint.setAntiAlias(true);
+        arcAnimPaint.setStyle(Paint.Style.STROKE);
+
+        interprogressPaint = new Paint();
+        interprogressPaint.setStrokeWidth(12);
+        interprogressPaint.setColor(Color.RED);
+        interprogressPaint.setAntiAlias(true);
+        interprogressPaint.setStyle(Paint.Style.STROKE);
