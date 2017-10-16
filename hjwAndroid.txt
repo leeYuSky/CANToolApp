@@ -126,3 +126,28 @@ import android.view.View;
     private int max = 100;//最大进度值
     private ValueAnimator lineAnim;
     private ValueAnimator outerProgressAnim;
+	
+    public CarRecorderView(Context context) {
+        super(context);
+    }
+
+    public CarRecorderView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        initPaint();
+        initAnim();
+    }
+
+    private void updateOuterProgressValue(float value) {
+        setOuterAnimAngle(value);
+    }
+
+    public void setOuterAnimAngle(float value){
+        this.plusAngle = (maxAngle * value) / max;
+        invalidate();
+    }
+    private void updateProgressText(float value) {
+        updateValue(value);
+    }
+    /**
+     * 初始化画笔
+     */
