@@ -164,3 +164,12 @@ import android.view.View;
         interprogressPaint.setColor(Color.RED);
         interprogressPaint.setAntiAlias(true);
         interprogressPaint.setStyle(Paint.Style.STROKE);
+		 unitTextPaint = new Paint();
+        unitTextPaint.setColor(Color.parseColor("#DBDBDB"));
+        unitTextPaint.setTextSize(20);
+        unitTextPaint.setAntiAlias(true);
+
+        textValuePaint = new Paint();
+        textValuePaint.setColor(Color.parseColor("#DBDBDB"));
+        textValuePaint.setTextSize(40);
+        textValuePaint.setAntiAlias(true);
