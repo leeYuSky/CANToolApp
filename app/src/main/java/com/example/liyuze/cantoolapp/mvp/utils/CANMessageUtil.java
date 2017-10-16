@@ -15,7 +15,7 @@ import java.util.Map;
 public class CANMessageUtil {
 
     /**
-     * @Author : liyuze
+     * @Author : magic
      * @Time : 17/10/15 下午8:32
      * @Description :
      * 解析CAN Message
@@ -36,7 +36,7 @@ public class CANMessageUtil {
     }
 
     /**
-     * @Author : liyuze
+     * @Author : magic
      * @Time : 17/10/15 下午8:55
      * @Description :
      * 生成CAN Message
@@ -46,7 +46,7 @@ public class CANMessageUtil {
     }
 
     /**
-     * @Author : liyuze
+     * @Author : magic
      * @Time : 17/10/15 下午8:26
      * @Description :
      * 解析标准帧
@@ -83,7 +83,7 @@ public class CANMessageUtil {
     }
 
     /**
-     * @Author : liyuze
+     * @Author : magic
      * @Time : 17/10/15 下午6:33
      * @Description :
      * 获得一个信号的物理值
@@ -151,7 +151,7 @@ public class CANMessageUtil {
 
 
     /**
-     * @Author : liyuze
+     * @Author : magic
      * @Time : 17/10/14 下午5:07
      * @Description :
      * 将十六进制字符串转为二进制字符串
