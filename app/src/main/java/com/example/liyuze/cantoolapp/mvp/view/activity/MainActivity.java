@@ -88,65 +88,65 @@ public class MainActivity extends AppCompatActivity {
                 "Comfort.txt"
         });
 
-        for(Map.Entry<String,List<signal>> entry : Constants.DATATABLE.entrySet()){
-            Log.e(TAG,entry.getKey());
-            for(signal s : entry.getValue()){
-                Log.e(TAG,"   " + s.toString());
-            }
+//        for(Map.Entry<String,List<signal>> entry : Constants.DATATABLE.entrySet()){
+//            Log.e(TAG,entry.getKey());
+//            for(signal s : entry.getValue()){
+//                Log.e(TAG,"   " + s.toString());
+//            }
+//        }
+
+
+
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if(mBluetoothAdapter == null){
+            showToast("This device's bluetooth is not available");
+            finish();
         }
 
+        getLocationPermissons();
 
-
-//        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-//        if(mBluetoothAdapter == null){
-//            showToast("This device's bluetooth is not available");
-//            finish();
-//        }
-//
-//        getLocationPermissons();
-//
-//        mConversationView = (ListView) findViewById(R.id.in);
-//        mOutEditText = (EditText) findViewById(R.id.edit_text_out);
-//        mSendButton = (Button) findViewById(R.id.button_send);
+        mConversationView = (ListView) findViewById(R.id.in);
+        mOutEditText = (EditText) findViewById(R.id.edit_text_out);
+        mSendButton = (Button) findViewById(R.id.button_send);
 
 
     }
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//
-//        if (!mBluetoothAdapter.isEnabled()) {
-//            // 调用系统 API 打开蓝牙
-//            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-//            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
-//            // Otherwise, setup the chat session
-//        } else if (mBluetoothPresenter == null) {
-//
-//            setupPresenter();
-//        }
-//    }
-//
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        if (mBluetoothPresenter != null) {
-//            // Only if the state is STATE_NONE, do we know that we haven't started already
-//            if (mBluetoothPresenter.getState() == BluetoothPresenter.STATE_NONE) {
-//                // Start the Bluetooth chat services
-//                mBluetoothPresenter.start();
-//            }
-//        }
-//
-//    }
-//
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        if (mBluetoothPresenter != null) {
-//            mBluetoothPresenter.stop();
-//        }
-//    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (!mBluetoothAdapter.isEnabled()) {
+            // 调用系统 API 打开蓝牙
+            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+            // Otherwise, setup the chat session
+        } else if (mBluetoothPresenter == null) {
+
+            setupPresenter();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mBluetoothPresenter != null) {
+            // Only if the state is STATE_NONE, do we know that we haven't started already
+            if (mBluetoothPresenter.getState() == BluetoothPresenter.STATE_NONE) {
+                // Start the Bluetooth chat services
+                mBluetoothPresenter.start();
+            }
+        }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mBluetoothPresenter != null) {
+            mBluetoothPresenter.stop();
+        }
+    }
 
     public void showToast(String msg){
         Toast.makeText(this,msg,Toast.LENGTH_LONG).show();
