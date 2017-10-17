@@ -174,3 +174,14 @@ import android.view.View;
         textValuePaint.setColor(Color.parseColor("#DBDBDB"));
         textValuePaint.setTextSize(40);
         textValuePaint.setAntiAlias(true);
+   blackCirclePaint = new Paint();
+        blackCirclePaint.setColor(Color.parseColor("#1A1A1A"));
+        blackCirclePaint.setStrokeWidth(blackCirClePaintWidth);
+        blackCirclePaint.setStyle(Paint.Style.STROKE);
+        blackCirclePaint.setAntiAlias(true);
+
+        whiteCirclePaint = new Paint();
+        whiteCirclePaint.setColor(Color.parseColor("#1A1A1A"));
+        whiteCirclePaint.setStrokeWidth(whiteCirclePaintWidth);
+        whiteCirclePaint.setStyle(Paint.Style.STROKE);
+        whiteCirclePaint.setAntiAlias(true);
