@@ -17,11 +17,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-
 import com.example.liyuze.cantoolapp.R;
 import com.example.liyuze.cantoolapp.mvp.adapter.PhoneAdapter;
 import com.example.liyuze.cantoolapp.mvp.model.PhoneInfo;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
