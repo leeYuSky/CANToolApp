@@ -8,6 +8,7 @@
     tools:context="bzu.edu.cn.phoneinfo.MainActivity">
 
 
+
    <RelativeLayout style="@style/h_wrap_content"
        android:layout_marginTop="10dp">
        <TextView
