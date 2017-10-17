@@ -20,7 +20,7 @@ import java.io.OutputStream;
 import java.util.UUID;
 
 /**
- * Created by liyuze on 17/10/11.
+ * Created by magic on 17/10/11.
  */
 
 public class BluetoothPresenter {
@@ -58,7 +58,7 @@ public class BluetoothPresenter {
 
 
     /**
-     * @Author : liyuze
+     * @Author : magic
      * @Time : 17/10/13 下午5:01
      * @Description :
      * Return the current connection state.
@@ -68,7 +68,7 @@ public class BluetoothPresenter {
     }
 
     /**
-     * @Author : liyuze
+     * @Author : magic
      * @Time : 17/10/13 下午5:01
      * @Description :
      * Update UI title according to the current state of the chat connection
@@ -83,7 +83,7 @@ public class BluetoothPresenter {
     }
 
     /**
-     * @Author : liyuze
+     * @Author : magic
      * @Time : 17/10/13 下午4:59
      * @Description :
      * Start the chat service. Specifically start AcceptThread to begin a
@@ -114,7 +114,7 @@ public class BluetoothPresenter {
     }
 
     /**
-     * @Author : liyuze
+     * @Author : magic
      * @Time : 17/10/13 下午4:53
      * @Description :
      * Start the ConnectThread to initiate a connection to a remote device.
@@ -144,7 +144,7 @@ public class BluetoothPresenter {
     }
 
     /**
-     * @Author : liyuze
+     * @Author : magic
      * @Time : 17/10/13 下午4:19
      * @Description :
      * Start the ConnectedThread to begin managing a Bluetooth connection
@@ -185,7 +185,7 @@ public class BluetoothPresenter {
     }
 
     /**
-     * @Author : liyuze
+     * @Author : magic
      * @Time : 17/10/13 下午5:09
      * @Description :
      * Stop all threads
@@ -214,7 +214,7 @@ public class BluetoothPresenter {
     }
 
     /**
-     * @Author : liyuze
+     * @Author : magic
      * @Time : 17/10/13 下午5:11
      * @Description :
      * Write to the ConnectedThread in an unsynchronized manner
@@ -232,7 +232,7 @@ public class BluetoothPresenter {
     }
 
     /**
-     * @Author : liyuze
+     * @Author : magic
      * @Time : 17/10/13 下午4:17
      * @Description :
      * Indicate that the connection attempt failed and notify the UI Activity.
@@ -254,7 +254,7 @@ public class BluetoothPresenter {
     }
 
     /**
-     * @Author : liyuze
+     * @Author : magic
      * @Time : 17/10/13 下午4:17
      * @Description :
      * Indicate that the connection was lost and notify the UI Activity.
@@ -355,7 +355,7 @@ public class BluetoothPresenter {
     }
 
     /**
-     * @Author : liyuze
+     * @Author : magic
      * @Time : 17/10/13 下午2:40
      * @Description :
      * This thread runs while attempting to make an outgoing connection
@@ -425,7 +425,7 @@ public class BluetoothPresenter {
 
 
     /**
-     * @Author : liyuze
+     * @Author : magic
      * @Time : 17/10/13 下午3:07
      * @Description :
      * This thread runs during a connection with a remote device.
