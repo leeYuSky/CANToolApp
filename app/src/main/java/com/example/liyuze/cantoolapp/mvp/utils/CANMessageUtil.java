@@ -111,7 +111,7 @@ public class CANMessageUtil {
             int realStart = getStart(signal.getStart());
 
             int intValue = Integer.parseInt(binaryData.substring(realStart,realStart + signal.getLength()),2);
-            System.out.println(intValue);
+//            System.out.println(intValue);
             double realValue = signal.getA() * intValue + signal.getOffset();
             return realValue;
 
@@ -275,6 +275,50 @@ public class CANMessageUtil {
 
 
 
+//        signal s1 = new signal("HVAC_AirCompressorSt",2,3,0,1.0,0.0,0.0,1.0,"");
+//        signal s2 = new signal("HVAC_CorrectedExterTempVD",3,1,0,1.0,0.0,0.0,1.0,"");
+//        signal s3 = new signal("HVAC_RawExterTempVD",4,1,0,1.0,0.0,0.0,1.0,"");
+//        signal s4 = new signal("HVAC_EngIdleStopProhibitReq",5,1,0,1.0,0.0,0.0,1.0,"");
+//        signal s5 = new signal("HVAC_ACSt",6,1,0,1.0,0.0,0.0,1.0,"");
+//        signal s6 = new signal("HVAC_ACmaxSt",7,1,0,1.0,0.0,0.0,1.0,"");
+//        signal s7 = new signal("HVAC_CorrectedExterTemp",15,8,0,0.5,-40.0,-40.0,87.5,"°C");
+//        signal s8 = new signal("HVAC_RawExterTemp",23,8,0,0.5,-40.0,-40.0,87.5,"°C");
+//        signal s9 = new signal("HVAC_TempSelect",28,5,0,0.5,18.0,18.0,32.0,"°C");
+//        signal s10 = new signal("HVAC_DualSt",29,1,0,1.0,0.0,0.0,1.0,"");
+//        signal s11 = new signal("HVAC_AutoSt",30,1,0,1.0,0.0,0.0,1.0,"");
+//        signal s12 = new signal("HVAC_Type",31,1,0,1.0,0.0,0.0,1.0,"");
+//        signal s13 = new signal("HVAC_WindExitMode",34,3,0,1.0,0.0,0.0,7.0,"");
+//        signal s14 = new signal("HVAC_SpdFanReq",36,2,0,1.0,0.0,0.0,1.0,"");
+//        signal s15 = new signal("HVAC_TelematicsSt",42,3,0,1.0,0.0,0.0,7.0,"");
+//        signal s16 = new signal("HVAC_AirCirculationSt",46,2,0,1.0,0.0,0.0,3.0,"");
+//        signal s17 = new signal("HVAC_PopUpDisplayReq",47,1,0,1.0,0.0,0.0,1.0,"");
+//        signal s18 = new signal("HVAC_DriverTempSelect",53,5,0,0.5,18.0,18.0,32.0,"°C");
+//        signal s19 = new signal("HVAC_IonMode",55,2,0,1.0,0.0,0.0,3.0,"");
+//        signal s20 = new signal("HVAC_WindExitSpd",59,4,0,1.0,0.0,0.0,15.0,"");
+//        signal s21 = new signal("HVAC_PsnTempSelect",48,5,0,0.5,18.0,18.0,32.0,"");
+//        System.out.println(getValue(s1,parseHexToBinary("F92B31EA026508C2")));
+//        System.out.println(getValue(s2,parseHexToBinary("F92B31EA026508C2")));
+//        System.out.println(getValue(s3,parseHexToBinary("F92B31EA026508C2")));
+//        System.out.println(getValue(s4,parseHexToBinary("F92B31EA026508C2")));
+//        System.out.println(getValue(s5,parseHexToBinary("F92B31EA026508C2")));
+//        System.out.println(getValue(s6,parseHexToBinary("F92B31EA026508C2")));
+//        System.out.println(getValue(s7,parseHexToBinary("F92B31EA026508C2")));
+//        System.out.println(getValue(s8,parseHexToBinary("F92B31EA026508C2")));
+//        System.out.println(getValue(s9,parseHexToBinary("F92B31EA026508C2")));
+//        System.out.println(getValue(s10,parseHexToBinary("F92B31EA026508C2")));
+//        System.out.println(getValue(s11,parseHexToBinary("F92B31EA026508C2")));
+//        System.out.println(getValue(s12,parseHexToBinary("F92B31EA026508C2")));
+//        System.out.println(getValue(s13,parseHexToBinary("F92B31EA026508C2")));
+//        System.out.println(getValue(s14,parseHexToBinary("F92B31EA026508C2")));
+//        System.out.println(getValue(s15,parseHexToBinary("F92B31EA026508C2")));
+//        System.out.println(getValue(s16,parseHexToBinary("F92B31EA026508C2")));
+//        System.out.println(getValue(s17,parseHexToBinary("F92B31EA026508C2")));
+//        System.out.println(getValue(s18,parseHexToBinary("F92B31EA026508C2")));
+//        System.out.println(getValue(s19,parseHexToBinary("F92B31EA026508C2")));
+//        System.out.println(getValue(s20,parseHexToBinary("F92B31EA026508C2")));
+//        System.out.println(getValue(s21,parseHexToBinary("F92B31EA026508C2")));
+
+
         signal s1 = new signal("HVAC_AirCompressorSt",2,3,0,1.0,0.0,0.0,1.0,"");
         signal s2 = new signal("HVAC_CorrectedExterTempVD",3,1,0,1.0,0.0,0.0,1.0,"");
         signal s3 = new signal("HVAC_RawExterTempVD",4,1,0,1.0,0.0,0.0,1.0,"");
@@ -296,27 +340,27 @@ public class CANMessageUtil {
         signal s19 = new signal("HVAC_IonMode",55,2,0,1.0,0.0,0.0,3.0,"");
         signal s20 = new signal("HVAC_WindExitSpd",59,4,0,1.0,0.0,0.0,15.0,"");
         signal s21 = new signal("HVAC_PsnTempSelect",48,5,0,0.5,18.0,18.0,32.0,"");
-        System.out.println(getValue(s1,parseHexToBinary("F92B31EA026508C2")));
-        System.out.println(getValue(s2,parseHexToBinary("F92B31EA026508C2")));
-        System.out.println(getValue(s3,parseHexToBinary("F92B31EA026508C2")));
-        System.out.println(getValue(s4,parseHexToBinary("F92B31EA026508C2")));
-        System.out.println(getValue(s5,parseHexToBinary("F92B31EA026508C2")));
-        System.out.println(getValue(s6,parseHexToBinary("F92B31EA026508C2")));
-        System.out.println(getValue(s7,parseHexToBinary("F92B31EA026508C2")));
-        System.out.println(getValue(s8,parseHexToBinary("F92B31EA026508C2")));
-        System.out.println(getValue(s9,parseHexToBinary("F92B31EA026508C2")));
-        System.out.println(getValue(s10,parseHexToBinary("F92B31EA026508C2")));
-        System.out.println(getValue(s11,parseHexToBinary("F92B31EA026508C2")));
-        System.out.println(getValue(s12,parseHexToBinary("F92B31EA026508C2")));
-        System.out.println(getValue(s13,parseHexToBinary("F92B31EA026508C2")));
-        System.out.println(getValue(s14,parseHexToBinary("F92B31EA026508C2")));
-        System.out.println(getValue(s15,parseHexToBinary("F92B31EA026508C2")));
-        System.out.println(getValue(s16,parseHexToBinary("F92B31EA026508C2")));
-        System.out.println(getValue(s17,parseHexToBinary("F92B31EA026508C2")));
-        System.out.println(getValue(s18,parseHexToBinary("F92B31EA026508C2")));
-        System.out.println(getValue(s19,parseHexToBinary("F92B31EA026508C2")));
-        System.out.println(getValue(s20,parseHexToBinary("F92B31EA026508C2")));
-        System.out.println(getValue(s21,parseHexToBinary("F92B31EA026508C2")));
+        System.out.println(getValue(s1,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s2,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s3,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s4,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s5,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s6,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s7,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s8,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s9,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s10,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s11,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s12,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s13,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s14,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s15,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s16,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s17,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s18,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s19,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s20,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s21,parseHexToBinary("80478C2F05A1D29A")));
 
     }
 
