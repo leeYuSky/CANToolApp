@@ -8,6 +8,7 @@
     tools:context="bzu.edu.cn.phoneinfo.MainActivity">
 
 
+
    <RelativeLayout style="@style/h_wrap_content"
        android:layout_marginTop="10dp">
        <TextView
@@ -126,3 +127,61 @@ import android.view.View;
     private int max = 100;//最大进度值
     private ValueAnimator lineAnim;
     private ValueAnimator outerProgressAnim;
+	
+    public CarRecorderView(Context context) {
+        super(context);
+    }
+
+    public CarRecorderView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        initPaint();
+        initAnim();
+    }
+
+    private void updateOuterProgressValue(float value) {
+        setOuterAnimAngle(value);
+    }
+
+    public void setOuterAnimAngle(float value){
+        this.plusAngle = (maxAngle * value) / max;
+        invalidate();
+    }
+    private void updateProgressText(float value) {
+        updateValue(value);
+    }
+    /**
+     * 初始化画笔
+     */
+	 
+    private void initPaint() {
+        arcAnimPaint = new Paint();
+        arcAnimPaint.setStrokeWidth(12);
+        arcAnimPaint.setColor(Color.parseColor("#1C86EE"));
+        arcAnimPaint.setAntiAlias(true);
+        arcAnimPaint.setStyle(Paint.Style.STROKE);
+
+        interprogressPaint = new Paint();
+        interprogressPaint.setStrokeWidth(12);
+        interprogressPaint.setColor(Color.RED);
+        interprogressPaint.setAntiAlias(true);
+        interprogressPaint.setStyle(Paint.Style.STROKE);
+		 unitTextPaint = new Paint();
+        unitTextPaint.setColor(Color.parseColor("#DBDBDB"));
+        unitTextPaint.setTextSize(20);
+        unitTextPaint.setAntiAlias(true);
+
+        textValuePaint = new Paint();
+        textValuePaint.setColor(Color.parseColor("#DBDBDB"));
+        textValuePaint.setTextSize(40);
+        textValuePaint.setAntiAlias(true);
+   blackCirclePaint = new Paint();
+        blackCirclePaint.setColor(Color.parseColor("#1A1A1A"));
+        blackCirclePaint.setStrokeWidth(blackCirClePaintWidth);
+        blackCirclePaint.setStyle(Paint.Style.STROKE);
+        blackCirclePaint.setAntiAlias(true);
+
+        whiteCirclePaint = new Paint();
+        whiteCirclePaint.setColor(Color.parseColor("#1A1A1A"));
+        whiteCirclePaint.setStrokeWidth(whiteCirclePaintWidth);
+        whiteCirclePaint.setStyle(Paint.Style.STROKE);
+        whiteCirclePaint.setAntiAlias(true);
