@@ -109,7 +109,9 @@ public class CANMessageUtil {
 //            return realValue;
 
             int realStart = getStart(signal.getStart());
+
             int intValue = Integer.parseInt(binaryData.substring(realStart,realStart + signal.getLength()),2);
+            System.out.println(intValue);
             double realValue = signal.getA() * intValue + signal.getOffset();
             return realValue;
 
@@ -218,12 +220,56 @@ public class CANMessageUtil {
 
 
     public static void main(String[] args){
-        signal s1 = new signal("a",23,12,0,1.0,0,1.0,1.0,"a");
-        signal s2 = new signal("b",16,12,1,1.0,0,1.0,1.0,"b");
-        System.out.println(getValue(s1,parseHexToBinary("0000010800000000")));
-        System.out.println(getValue(s2,parseHexToBinary("0000010800000000")));
-        System.out.println(getValue(s1,parseHexToBinary("0000801000000000")));
-        System.out.println(getValue(s2,parseHexToBinary("0000801000000000")));
+//        signal s1 = new signal("a",23,12,0,1.0,0,1.0,1.0,"a");
+//        signal s2 = new signal("b",16,12,1,1.0,0,1.0,1.0,"b");
+//        System.out.println(getValue(s1,parseHexToBinary("0000010800000000")));
+//        System.out.println(getValue(s2,parseHexToBinary("0000010800000000")));
+//        System.out.println(getValue(s1,parseHexToBinary("0000801000000000")));
+//        System.out.println(getValue(s2,parseHexToBinary("0000801000000000")));
+        signal s1 = new signal("CDU_HVACOffButtonSt",0,1,0,1.0,0.0,0.0,1.0,"");
+        signal s2 = new signal("CDU_HVACOffButtonStVD",1,1,0,1.0,0.0,0.0,1.0,"");
+        signal s3 = new signal("CDU_HVACAutoModeButtonSt",2,1,0,1.0,0.0,0.0,1.0,"");
+        signal s4 = new signal("CDU_HVACAutoModeButtonStVD",3,1,0,1.0,0.0,0.0,1.0,"");
+        signal s5 = new signal("CDU_HVACFDefrostButtonSt",6,1,0,1.0,0.0,0.0,1.0,"");
+        signal s6 = new signal("CDU_HVACFDefrostButtonStVD",7,1,0,1.0,0.0,0.0,1.0,"");
+        signal s7 = new signal("CDU_HVACDualButtonSt",10,1,0,1.0,0.0,0.0,1.0,"");
+        signal s8 = new signal("CDU_HVACDualButtonStVD",11,1,0,1.0,0.0,0.0,1.0,"");
+        signal s9 = new signal("CDU_HVACIonButtonSt",12,1,0,1.0,0.0,0.0,1.0,"");
+        signal s10 = new signal("CDU_HVACIonButtonStVD",13,1,0,1.0,0.0,0.0,1.0,"");
+        signal s11 = new signal("CDU_HVACCirculationButtonSt",18,1,0,1.0,0.0,0.0,1.0,"");
+        signal s12 = new signal("CDU_HVACCirculationButtonStVD",19,1,0,1.0,0.0,0.0,1.0,"");
+        signal s13 = new signal("CDU_HVACACButtonSt",20,1,0,1.0,0.0,0.0,1.0,"");
+        signal s14 = new signal("CDU_HVACACButtonStVD",21,1,0,1.0,0.0,0.0,1.0,"");
+        signal s15 = new signal("CDU_HVACACMaxButtonSt",22,1,0,1.0,0.0,0.0,1.0,"");
+        signal s16 = new signal("CDU_HVACACMaxButtonStVD",23,1,0,1.0,0.0,0.0,1.0,"");
+        signal s17 = new signal("CDU_HVACModeButtonSt",26,3,0,1.0,0.0,0.0,7.0,"");
+        signal s18 = new signal("HVAC_WindExitSpd",30,4,0,1.0,0.0,0.0,15.0,"");
+        signal s19 = new signal("CDU_HVAC_DriverTempSelect",36,5,0,0.5,18.0,18.0,32.0,"°C");
+        signal s20 = new signal("HVAC_PsnTempSelect",44,5,0,0.5,18.0,18.0,32.0,"");
+        signal s21 = new signal("CDU_HVACCtrlModeSt",54,3,0,1.0,0.0,0.0,7.0,"");
+        signal s22 = new signal("CDU_ControlSt",55,1,0,1.0,0.0,0.0,1.0,"");
+        System.out.println(getValue(s1,parseHexToBinary("4D10600C131A7000")));
+        System.out.println(getValue(s2,parseHexToBinary("4D10600C131A7000")));
+        System.out.println(getValue(s3,parseHexToBinary("4D10600C131A7000")));
+        System.out.println(getValue(s4,parseHexToBinary("4D10600C131A7000")));
+        System.out.println(getValue(s5,parseHexToBinary("4D10600C131A7000")));
+        System.out.println(getValue(s6,parseHexToBinary("4D10600C131A7000")));
+        System.out.println(getValue(s7,parseHexToBinary("4D10600C131A7000")));
+        System.out.println(getValue(s8,parseHexToBinary("4D10600C131A7000")));
+        System.out.println(getValue(s9,parseHexToBinary("4D10600C131A7000")));
+        System.out.println(getValue(s10,parseHexToBinary("4D10600C131A7000")));
+        System.out.println(getValue(s11,parseHexToBinary("4D10600C131A7000")));
+        System.out.println(getValue(s12,parseHexToBinary("4D10600C131A7000")));
+        System.out.println(getValue(s13,parseHexToBinary("4D10600C131A7000")));
+        System.out.println(getValue(s14,parseHexToBinary("4D10600C131A7000")));
+        System.out.println(getValue(s15,parseHexToBinary("4D10600C131A7000")));
+        System.out.println(getValue(s16,parseHexToBinary("4D10600C131A7000")));
+        System.out.println(getValue(s17,parseHexToBinary("4D10600C131A7000")));
+        System.out.println(getValue(s18,parseHexToBinary("4D10600C131A7000")));
+        System.out.println(getValue(s19,parseHexToBinary("4D10600C131A7000")));
+        System.out.println(getValue(s20,parseHexToBinary("4D10600C131A7000")));
+        System.out.println(getValue(s21,parseHexToBinary("4D10600C131A7000")));
+        System.out.println(getValue(s22,parseHexToBinary("4D10600C131A7000")));
 
     }
 
