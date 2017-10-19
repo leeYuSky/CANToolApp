@@ -42,7 +42,7 @@ import static android.app.Activity.RESULT_OK;
  */
 public class HomeFragment extends Fragment {
 
-    public static final String TAG = HomeFragment.class.toString();
+    public static final String TAG = "HomeFragment";
 
     public static final int REQUEST_ENABLE_BT = 1; // 请求打开蓝牙
 
@@ -50,7 +50,7 @@ public class HomeFragment extends Fragment {
 
     BluetoothAdapter mBluetoothAdapter;
     BluetoothPresenter mBluetoothPresenter;
-    private ArrayAdapter<String> mConversationArrayAdapter;
+    public ArrayAdapter<String> mConversationArrayAdapter;
     private String mConnectedDeviceName = null;
     private StringBuffer mOutStringBuffer;
 
@@ -75,6 +75,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.e(TAG,"--------------------onCreate---------------------");
 //        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 //        if(mBluetoothAdapter == null){
 //            MainActivity activity = (MainActivity) getActivity();
@@ -86,6 +87,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        Log.e(TAG,"--------------------onStart---------------------");
 //        if (!mBluetoothAdapter.isEnabled()) {
 //            // 调用系统 API 打开蓝牙
 //            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -99,12 +101,35 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        Log.e(TAG,"--------------------onCreateView---------------------");
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         Bundle bundle = getArguments();
         String agrs1 = bundle.getString("agrs1");
-//        mConversationView =  view.findViewById(R.id.in);
-//        mOutEditText =  view.findViewById(R.id.edit_text_out);
-//        mSendButton = view.findViewById(R.id.button_send);
+        mConversationView =  view.findViewById(R.id.in);
+        mOutEditText =  view.findViewById(R.id.edit_text_out);
+        mSendButton = view.findViewById(R.id.button_send);
+
+        mConversationArrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1);
+        mConversationView.setAdapter(mConversationArrayAdapter);
+        mOutEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_NULL && event.getAction() == KeyEvent.ACTION_UP) {
+                    String message = v.getText().toString();
+                    ((MainActivity)getActivity()).sendMessage(message);
+                }
+                return true;
+            }
+        });
+
+        mSendButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Send a message using content of the edit text widget
+                String message = mOutEditText.getText().toString();
+                ((MainActivity)getActivity()).sendMessage(message);
+            }
+        });
         return view;
     }
 

@@ -20,6 +20,9 @@ import com.example.liyuze.cantoolapp.R;
  * create an instance of this fragment.
  */
 public class DownloadFragment extends Fragment {
+
+    public static final String TAG = DownloadFragment.class.toString();
+
     public static DownloadFragment newInstance(String param1) {
         DownloadFragment fragment = new DownloadFragment();
         Bundle args = new Bundle();

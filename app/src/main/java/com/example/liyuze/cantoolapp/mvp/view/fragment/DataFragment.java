@@ -20,6 +20,9 @@ import com.example.liyuze.cantoolapp.R;
  * create an instance of this fragment.
  */
 public class DataFragment extends Fragment {
+
+    public static final String TAG = DataFragment.class.toString();
+
     public static DataFragment newInstance(String param1) {
         DataFragment fragment = new DataFragment();
         Bundle args = new Bundle();

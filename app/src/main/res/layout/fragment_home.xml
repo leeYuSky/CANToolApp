@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.liyuze.cantoolapp.mvp.view.fragment.HomeFragment">
-
+    
     <ListView
         android:id="@+id/in"
         android:layout_width="match_parent"
