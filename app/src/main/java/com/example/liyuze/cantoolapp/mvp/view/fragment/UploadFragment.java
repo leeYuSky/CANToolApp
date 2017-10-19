@@ -14,7 +14,7 @@ import com.example.liyuze.cantoolapp.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link UploadFragment.OnFragmentInteractionListener} interface
+ * {link UploadFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link UploadFragment#newInstance} factory method to
  * create an instance of this fragment.
