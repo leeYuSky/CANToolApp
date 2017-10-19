@@ -26,7 +26,12 @@ dependencies {
     })
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.4'
+    // bottom-navigation-bar
+
+
+    compile 'com.ashokvarma.android:bottom-navigation-bar:2.0.3'
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.android.support:support-v4:26.+'
     testCompile 'junit:junit:4.12'
 }

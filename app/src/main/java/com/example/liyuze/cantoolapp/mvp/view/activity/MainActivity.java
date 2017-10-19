@@ -15,6 +15,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -31,11 +33,17 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ashokvarma.bottomnavigation.BottomNavigationBar;
+import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.example.liyuze.cantoolapp.R;
 import com.example.liyuze.cantoolapp.mvp.constants.Constants;
 import com.example.liyuze.cantoolapp.mvp.model.signal;
 import com.example.liyuze.cantoolapp.mvp.presenter.BluetoothPresenter;
 import com.example.liyuze.cantoolapp.mvp.utils.datatableUtil;
+import com.example.liyuze.cantoolapp.mvp.view.fragment.DataFragment;
+import com.example.liyuze.cantoolapp.mvp.view.fragment.DownloadFragment;
+import com.example.liyuze.cantoolapp.mvp.view.fragment.HomeFragment;
+import com.example.liyuze.cantoolapp.mvp.view.fragment.UploadFragment;
 import com.example.liyuze.cantoolapp.mvp.view.mvpView.MvpMainView;
 
 import java.io.BufferedReader;
@@ -73,6 +81,12 @@ public class MainActivity extends AppCompatActivity {
     private StringBuffer mOutStringBuffer;
 
 
+    HomeFragment mHomeFragment;
+    DataFragment mDataFragment;
+    UploadFragment mUploadFragment;
+    DownloadFragment mDownloadFragment;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,11 +96,76 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setSubtitle("No device connected");
         setSupportActionBar(toolbar);
 
-        datatableUtil.read(this,new String[]{
-                "canmsg-sample.txt",
-                "PowerTrain.txt",
-                "Comfort.txt"
+
+        BottomNavigationBar bottomNavigationBar = (BottomNavigationBar) findViewById(R.id.bottom_navigation_bar);
+        bottomNavigationBar.setMode(BottomNavigationBar.MODE_FIXED);
+        bottomNavigationBar.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
+
+        bottomNavigationBar.setInActiveColor(R.color.gray).setBarBackgroundColor(R.color.whitesmoke);
+
+
+        bottomNavigationBar
+                .addItem(new BottomNavigationItem(R.mipmap.ic_mainpage, "Home").setActiveColorResource(R.color.orangered))
+                .addItem(new BottomNavigationItem(R.mipmap.ic_datalist, "Data").setActiveColorResource(R.color.forestgreen))
+                .addItem(new BottomNavigationItem(R.mipmap.ic_upload, "Upload").setActiveColorResource(R.color.skyblue))
+                .addItem(new BottomNavigationItem(R.mipmap.ic_download, "Download").setActiveColorResource(R.color.brown))
+                .initialise();
+
+        setDefaultFragment();
+        bottomNavigationBar.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener(){
+            @Override
+            public void onTabSelected(int position) {
+
+                Log.d(TAG, "onTabSelected() called with: " + "position = [" + position + "]");
+                FragmentManager fm = getSupportFragmentManager();
+                //开启事务
+                FragmentTransaction transaction = fm.beginTransaction();
+                switch (position) {
+                    case 0:
+                        if (mHomeFragment == null) {
+                            mHomeFragment = HomeFragment.newInstance("Home");
+                        }
+                        transaction.replace(R.id.layFrame, mHomeFragment);
+                        break;
+                    case 1:
+                        if (mDataFragment == null) {
+                            mDataFragment = DataFragment.newInstance("Data");
+                        }
+                        transaction.replace(R.id.layFrame, mDataFragment);
+                        break;
+                    case 2:
+                        if (mUploadFragment == null) {
+                            mUploadFragment = UploadFragment.newInstance("Upload");
+                        }
+                        transaction.replace(R.id.layFrame, mUploadFragment);
+                        break;
+                    case 3:
+                        if (mDownloadFragment == null) {
+                            mDownloadFragment = DownloadFragment.newInstance("Download");
+                        }
+                        transaction.replace(R.id.layFrame, mDownloadFragment);
+
+                        break;
+                    default:
+                        break;
+                }
+                // 事务提交
+                transaction.commit();
+            }
+            @Override
+            public void onTabUnselected(int position) {
+                Log.d(TAG, "onTabUnselected() called with: " + "position = [" + position + "]");
+            }
+            @Override
+            public void onTabReselected(int position) {
+            }
         });
+
+//        datatableUtil.read(this,new String[]{
+//                "canmsg-sample.txt",
+//                "PowerTrain.txt",
+//                "Comfort.txt"
+//        });
 
 //        for(Map.Entry<String,List<signal>> entry : Constants.DATATABLE.entrySet()){
 //            Log.e(TAG,entry.getKey());
@@ -97,55 +176,63 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if(mBluetoothAdapter == null){
-            showToast("This device's bluetooth is not available");
-            finish();
-        }
+//        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+//        if(mBluetoothAdapter == null){
+//            showToast("This device's bluetooth is not available");
+//            finish();
+//        }
+//
+//        getLocationPermissons();
 
-        getLocationPermissons();
+//        mConversationView = (ListView) findViewById(R.id.in);
+//        mOutEditText = (EditText) findViewById(R.id.edit_text_out);
+//        mSendButton = (Button) findViewById(R.id.button_send);
 
-        mConversationView = (ListView) findViewById(R.id.in);
-        mOutEditText = (EditText) findViewById(R.id.edit_text_out);
-        mSendButton = (Button) findViewById(R.id.button_send);
-
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        if (!mBluetoothAdapter.isEnabled()) {
-            // 调用系统 API 打开蓝牙
-            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
-            // Otherwise, setup the chat session
-        } else if (mBluetoothPresenter == null) {
-
-            setupPresenter();
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (mBluetoothPresenter != null) {
-            // Only if the state is STATE_NONE, do we know that we haven't started already
-            if (mBluetoothPresenter.getState() == BluetoothPresenter.STATE_NONE) {
-                // Start the Bluetooth chat services
-                mBluetoothPresenter.start();
-            }
-        }
 
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mBluetoothPresenter != null) {
-            mBluetoothPresenter.stop();
-        }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//
+//        if (!mBluetoothAdapter.isEnabled()) {
+//            // 调用系统 API 打开蓝牙
+//            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+//            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+//            // Otherwise, setup the chat session
+//        } else if (mBluetoothPresenter == null) {
+//
+//            setupPresenter();
+//        }
+//    }
+//
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        if (mBluetoothPresenter != null) {
+//            // Only if the state is STATE_NONE, do we know that we haven't started already
+//            if (mBluetoothPresenter.getState() == BluetoothPresenter.STATE_NONE) {
+//                // Start the Bluetooth chat services
+//                mBluetoothPresenter.start();
+//            }
+//        }
+//
+//    }
+//
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        if (mBluetoothPresenter != null) {
+//            mBluetoothPresenter.stop();
+//        }
+//    }
+
+    private void setDefaultFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        mHomeFragment = HomeFragment.newInstance("Home");
+        transaction.replace(R.id.layFrame,mHomeFragment );
+        transaction.commit();
     }
 
     public void showToast(String msg){
@@ -169,14 +256,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mSendButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Send a message using content of the edit text widget
-                    TextView textView = (TextView) findViewById(R.id.edit_text_out);
-                    String message = textView.getText().toString();
-                    sendMessage(message);
-            }
-        });
+//        mSendButton.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                // Send a message using content of the edit text widget
+//                    TextView textView = (TextView) findViewById(R.id.edit_text_out);
+//                    String message = textView.getText().toString();
+//                    sendMessage(message);
+//            }
+//        });
 
         mBluetoothPresenter = new BluetoothPresenter(mHandler);
         mOutStringBuffer = new StringBuffer("");
