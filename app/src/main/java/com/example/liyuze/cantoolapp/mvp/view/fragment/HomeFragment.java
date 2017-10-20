@@ -75,7 +75,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.e(TAG,"--------------------onCreate---------------------");
+        Log.e(TAG,"--------------------onCreate---------------------HomeFragment");
 //        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 //        if(mBluetoothAdapter == null){
 //            MainActivity activity = (MainActivity) getActivity();
@@ -87,7 +87,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        Log.e(TAG,"--------------------onStart---------------------");
+        Log.e(TAG,"--------------------onStart---------------------HomeFragment");
 //        if (!mBluetoothAdapter.isEnabled()) {
 //            // 调用系统 API 打开蓝牙
 //            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -102,7 +102,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        Log.e(TAG,"--------------------onCreateView---------------------");
+        Log.e(TAG,"--------------------onCreateView---------------------HomeFragment");
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         Bundle bundle = getArguments();
         String agrs1 = bundle.getString("agrs1");

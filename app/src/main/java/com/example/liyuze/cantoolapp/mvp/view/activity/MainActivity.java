@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.e(TAG,"-----------------------------onCreate------------------------------MainActivity");
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setSubtitle("No device connected");
@@ -139,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
+        Log.e(TAG,"-----------------------------onStart------------------------------MainActivity");
         setDefaultFragment();
 
 
@@ -148,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.e(TAG,"-----------------------------onResume------------------------------MainActivity");
 
         if (!mBluetoothAdapter.isEnabled()) {
             // 调用系统 API 打开蓝牙
@@ -162,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
             mConversationArrayAdapter = homeFragment.mConversationArrayAdapter;
             setupPresenter();
         } else if (mBluetoothPresenter != null) {
+
             // Only if the state is STATE_NONE, do we know that we haven't started already
             if (mBluetoothPresenter.getState() == BluetoothPresenter.STATE_NONE) {
                 // Start the Bluetooth chat services
@@ -173,6 +176,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        Log.e(TAG,"-----------------------------onDestroy------------------------------MainActivity");
         super.onDestroy();
         if (mBluetoothPresenter != null) {
             mBluetoothPresenter.stop();
@@ -213,25 +217,99 @@ public class MainActivity extends AppCompatActivity {
                         if (mHomeFragment == null) {
                             mHomeFragment = HomeFragment.newInstance("Home");
                         }
-                        transaction.replace(R.id.layFrame, mHomeFragment,HomeFragment.TAG);
+                        if(!mHomeFragment.isAdded()){
+                            transaction.add(R.id.layFrame, mHomeFragment,HomeFragment.TAG);
+                        }
+                        if(!(mDataFragment == null)){
+                            if(mDataFragment.isAdded()){
+                                transaction.hide(mDataFragment);
+                            }
+                        }
+                        if(!(mUploadFragment == null)){
+                            if(mUploadFragment.isAdded()){
+                                transaction.hide(mUploadFragment);
+                            }
+                        }
+                        if(!(mDownloadFragment == null)){
+                            if(mDownloadFragment.isAdded()){
+                                transaction.hide(mDownloadFragment);
+                            }
+                        }
+                        transaction.show(mHomeFragment);
+
                         break;
                     case 1:
                         if (mDataFragment == null) {
                             mDataFragment = DataFragment.newInstance("Data");
                         }
-                        transaction.replace(R.id.layFrame, mDataFragment);
+                        if(!mDataFragment.isAdded()) {
+                            transaction.add(R.id.layFrame, mDataFragment);
+                        }
+                        if(!(mHomeFragment == null)){
+                            if(mHomeFragment.isAdded()){
+                                transaction.hide(mHomeFragment);
+                            }
+                        }
+                        if(!(mUploadFragment == null)){
+                            if(mUploadFragment.isAdded()){
+                                transaction.hide(mUploadFragment);
+                            }
+                        }
+                        if(!(mDownloadFragment == null)){
+                            if(mDownloadFragment.isAdded()){
+                                transaction.hide(mDownloadFragment);
+                            }
+                        }
+                        transaction.show(mDataFragment);
+
                         break;
                     case 2:
                         if (mUploadFragment == null) {
                             mUploadFragment = UploadFragment.newInstance("Upload");
                         }
-                        transaction.replace(R.id.layFrame, mUploadFragment);
+                        if(!mUploadFragment.isAdded()) {
+                            transaction.add(R.id.layFrame, mUploadFragment);
+                        }
+                        if(!(mHomeFragment == null)){
+                            if(mHomeFragment.isAdded()){
+                                transaction.hide(mHomeFragment);
+                            }
+                        }
+                        if(!(mDataFragment == null)){
+                            if(mDataFragment.isAdded()){
+                                transaction.hide(mDataFragment);
+                            }
+                        }
+                        if(!(mDownloadFragment == null)){
+                            if(mDownloadFragment.isAdded()){
+                                transaction.hide(mDownloadFragment);
+                            }
+                        }
+                        transaction.show(mUploadFragment);
                         break;
                     case 3:
                         if (mDownloadFragment == null) {
                             mDownloadFragment = DownloadFragment.newInstance("Download");
                         }
-                        transaction.replace(R.id.layFrame, mDownloadFragment);
+                        if(!mDownloadFragment.isAdded()) {
+                            transaction.add(R.id.layFrame, mDownloadFragment);
+                        }
+                        if(!(mHomeFragment == null)){
+                            if(mHomeFragment.isAdded()){
+                                transaction.hide(mHomeFragment);
+                            }
+                        }
+                        if(!(mDataFragment == null)){
+                            if(mDataFragment.isAdded()){
+                                transaction.hide(mDataFragment);
+                            }
+                        }
+                        if(!(mUploadFragment == null)){
+                            if(mUploadFragment.isAdded()){
+                                transaction.hide(mUploadFragment);
+                            }
+                        }
+                        transaction.show(mDownloadFragment);
 
                         break;
                     default:
