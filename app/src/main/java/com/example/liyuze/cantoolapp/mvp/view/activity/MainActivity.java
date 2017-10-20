@@ -261,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
         if(mHomeFragment == null) {
             mHomeFragment = HomeFragment.newInstance("Home");
         }
-        transaction.replace(R.id.layFrame,mHomeFragment,HomeFragment.TAG);
+        transaction.add(R.id.layFrame,mHomeFragment,HomeFragment.TAG);
         transaction.commit();
     }
 
