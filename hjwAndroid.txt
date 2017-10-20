@@ -190,3 +190,8 @@ import android.view.View;
         outerPaint.setStrokeWidth(whiteCirclePaintWidth);
         outerPaint.setStyle(Paint.Style.STROKE);
         outerPaint.setAntiAlias(true);
+		  outerSmallPaint = new Paint();
+        outerSmallPaint.setColor(Color.RED);
+        outerSmallPaint.setStrokeWidth(whiteCirclePaintWidth-8);
+        outerSmallPaint.setStyle(Paint.Style.STROKE);
+        outerSmallPaint.setAntiAlias(true);
