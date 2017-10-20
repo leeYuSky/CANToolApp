@@ -195,3 +195,10 @@ import android.view.View;
         outerSmallPaint.setStrokeWidth(whiteCirclePaintWidth-8);
         outerSmallPaint.setStyle(Paint.Style.STROKE);
         outerSmallPaint.setAntiAlias(true);
+
+        linePaint = new Paint();
+        linePaint.setColor(Color.parseColor("#20B2AA"));
+        linePaint.setStrokeWidth(lineWidth);
+        linePaint.setStyle(Paint.Style.FILL);
+        linePaint.setAntiAlias(true);
+
