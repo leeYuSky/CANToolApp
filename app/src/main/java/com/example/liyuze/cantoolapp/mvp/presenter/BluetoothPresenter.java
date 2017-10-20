@@ -51,6 +51,7 @@ public class BluetoothPresenter {
 
 
     public BluetoothPresenter(Handler handler){
+//        获取蓝牙适配器
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         mState = STATE_NONE;
         this.handler = handler;
