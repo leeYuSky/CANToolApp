@@ -91,6 +91,7 @@ public class BluetoothPresenter {
      * Start the chat service. Specifically start AcceptThread to begin a
      * session in listening (server) mode. Called by the Activity onResume()
      * */
+    // 开启服务器监听模式
     public synchronized void start() {
         Log.d(TAG, "start");
 
