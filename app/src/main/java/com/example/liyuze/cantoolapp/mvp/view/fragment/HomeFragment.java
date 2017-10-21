@@ -106,6 +106,7 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         Bundle bundle = getArguments();
         String agrs1 = bundle.getString("agrs1");
+
         mConversationView =  view.findViewById(R.id.in);
         mOutEditText =  view.findViewById(R.id.edit_text_out);
         mSendButton = view.findViewById(R.id.button_send);
@@ -130,6 +131,10 @@ public class HomeFragment extends Fragment {
                 ((MainActivity)getActivity()).sendMessage(message);
             }
         });
+
+        MainActivity activity = (MainActivity) getActivity();
+        activity.mConversationArrayAdapter = mConversationArrayAdapter;
+
         return view;
     }
 

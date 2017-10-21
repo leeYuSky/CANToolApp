@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView mConversationView;
     private EditText mOutEditText;
     private Button mSendButton;
-    private ArrayAdapter<String> mConversationArrayAdapter;
+    public ArrayAdapter<String> mConversationArrayAdapter;
     private String mConnectedDeviceName = null;
     private StringBuffer mOutStringBuffer;
 
@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
             mConversationView = homeFragment.getView().findViewById(R.id.in);
             mOutEditText = homeFragment.getView().findViewById(R.id.edit_text_out);
             mSendButton = homeFragment.getView().findViewById(R.id.button_send);
-            mConversationArrayAdapter = homeFragment.mConversationArrayAdapter;
+//            mConversationArrayAdapter = homeFragment.mConversationArrayAdapter;
             setupPresenter();
         } else if (mBluetoothPresenter != null) {
 
@@ -217,99 +217,103 @@ public class MainActivity extends AppCompatActivity {
                         if (mHomeFragment == null) {
                             mHomeFragment = HomeFragment.newInstance("Home");
                         }
-                        if(!mHomeFragment.isAdded()){
-                            transaction.add(R.id.layFrame, mHomeFragment,HomeFragment.TAG);
-                        }
-                        if(!(mDataFragment == null)){
-                            if(mDataFragment.isAdded()){
-                                transaction.hide(mDataFragment);
-                            }
-                        }
-                        if(!(mUploadFragment == null)){
-                            if(mUploadFragment.isAdded()){
-                                transaction.hide(mUploadFragment);
-                            }
-                        }
-                        if(!(mDownloadFragment == null)){
-                            if(mDownloadFragment.isAdded()){
-                                transaction.hide(mDownloadFragment);
-                            }
-                        }
-                        transaction.show(mHomeFragment);
+//                        if(!mHomeFragment.isAdded()){
+//                            transaction.add(R.id.layFrame, mHomeFragment,HomeFragment.TAG);
+//                        }
+//                        if(!(mDataFragment == null)){
+//                            if(mDataFragment.isAdded()){
+//                                transaction.hide(mDataFragment);
+//                            }
+//                        }
+//                        if(!(mUploadFragment == null)){
+//                            if(mUploadFragment.isAdded()){
+//                                transaction.hide(mUploadFragment);
+//                            }
+//                        }
+//                        if(!(mDownloadFragment == null)){
+//                            if(mDownloadFragment.isAdded()){
+//                                transaction.hide(mDownloadFragment);
+//                            }
+//                        }
+//                        transaction.show(mHomeFragment);
+                        transaction.replace(R.id.layFrame,mHomeFragment);
 
                         break;
                     case 1:
                         if (mDataFragment == null) {
                             mDataFragment = DataFragment.newInstance("Data");
                         }
-                        if(!mDataFragment.isAdded()) {
-                            transaction.add(R.id.layFrame, mDataFragment);
-                        }
-                        if(!(mHomeFragment == null)){
-                            if(mHomeFragment.isAdded()){
-                                transaction.hide(mHomeFragment);
-                            }
-                        }
-                        if(!(mUploadFragment == null)){
-                            if(mUploadFragment.isAdded()){
-                                transaction.hide(mUploadFragment);
-                            }
-                        }
-                        if(!(mDownloadFragment == null)){
-                            if(mDownloadFragment.isAdded()){
-                                transaction.hide(mDownloadFragment);
-                            }
-                        }
-                        transaction.show(mDataFragment);
+//                        if(!mDataFragment.isAdded()) {
+//                            transaction.add(R.id.layFrame, mDataFragment);
+//                        }
+//                        if(!(mHomeFragment == null)){
+//                            if(mHomeFragment.isAdded()){
+//                                transaction.hide(mHomeFragment);
+//                            }
+//                        }
+//                        if(!(mUploadFragment == null)){
+//                            if(mUploadFragment.isAdded()){
+//                                transaction.hide(mUploadFragment);
+//                            }
+//                        }
+//                        if(!(mDownloadFragment == null)){
+//                            if(mDownloadFragment.isAdded()){
+//                                transaction.hide(mDownloadFragment);
+//                            }
+//                        }
+//                        transaction.show(mDataFragment);
+                        transaction.replace(R.id.layFrame,mDataFragment);
 
                         break;
                     case 2:
                         if (mUploadFragment == null) {
                             mUploadFragment = UploadFragment.newInstance("Upload");
                         }
-                        if(!mUploadFragment.isAdded()) {
-                            transaction.add(R.id.layFrame, mUploadFragment);
-                        }
-                        if(!(mHomeFragment == null)){
-                            if(mHomeFragment.isAdded()){
-                                transaction.hide(mHomeFragment);
-                            }
-                        }
-                        if(!(mDataFragment == null)){
-                            if(mDataFragment.isAdded()){
-                                transaction.hide(mDataFragment);
-                            }
-                        }
-                        if(!(mDownloadFragment == null)){
-                            if(mDownloadFragment.isAdded()){
-                                transaction.hide(mDownloadFragment);
-                            }
-                        }
-                        transaction.show(mUploadFragment);
+//                        if(!mUploadFragment.isAdded()) {
+//                            transaction.add(R.id.layFrame, mUploadFragment);
+//                        }
+//                        if(!(mHomeFragment == null)){
+//                            if(mHomeFragment.isAdded()){
+//                                transaction.hide(mHomeFragment);
+//                            }
+//                        }
+//                        if(!(mDataFragment == null)){
+//                            if(mDataFragment.isAdded()){
+//                                transaction.hide(mDataFragment);
+//                            }
+//                        }
+//                        if(!(mDownloadFragment == null)){
+//                            if(mDownloadFragment.isAdded()){
+//                                transaction.hide(mDownloadFragment);
+//                            }
+//                        }
+//                        transaction.show(mUploadFragment);
+                        transaction.replace(R.id.layFrame,mUploadFragment);
                         break;
                     case 3:
                         if (mDownloadFragment == null) {
                             mDownloadFragment = DownloadFragment.newInstance("Download");
                         }
-                        if(!mDownloadFragment.isAdded()) {
-                            transaction.add(R.id.layFrame, mDownloadFragment);
-                        }
-                        if(!(mHomeFragment == null)){
-                            if(mHomeFragment.isAdded()){
-                                transaction.hide(mHomeFragment);
-                            }
-                        }
-                        if(!(mDataFragment == null)){
-                            if(mDataFragment.isAdded()){
-                                transaction.hide(mDataFragment);
-                            }
-                        }
-                        if(!(mUploadFragment == null)){
-                            if(mUploadFragment.isAdded()){
-                                transaction.hide(mUploadFragment);
-                            }
-                        }
-                        transaction.show(mDownloadFragment);
+//                        if(!mDownloadFragment.isAdded()) {
+//                            transaction.add(R.id.layFrame, mDownloadFragment);
+//                        }
+//                        if(!(mHomeFragment == null)){
+//                            if(mHomeFragment.isAdded()){
+//                                transaction.hide(mHomeFragment);
+//                            }
+//                        }
+//                        if(!(mDataFragment == null)){
+//                            if(mDataFragment.isAdded()){
+//                                transaction.hide(mDataFragment);
+//                            }
+//                        }
+//                        if(!(mUploadFragment == null)){
+//                            if(mUploadFragment.isAdded()){
+//                                transaction.hide(mUploadFragment);
+//                            }
+//                        }
+//                        transaction.show(mDownloadFragment);
+                        transaction.replace(R.id.layFrame,mDownloadFragment);
 
                         break;
                     default:
@@ -339,7 +343,8 @@ public class MainActivity extends AppCompatActivity {
         if(mHomeFragment == null) {
             mHomeFragment = HomeFragment.newInstance("Home");
         }
-        transaction.add(R.id.layFrame,mHomeFragment,HomeFragment.TAG);
+//        transaction.add(R.id.layFrame,mHomeFragment,HomeFragment.TAG);
+        transaction.replace(R.id.layFrame,mHomeFragment,HomeFragment.TAG);
         transaction.commit();
     }
 
