@@ -74,6 +74,7 @@ public class BluetoothPresenter {
      * @Description :
      * Update UI title according to the current state of the chat connection
      * */
+    // 更新标题栏子标题
     private synchronized void updateUserInterfaceTitle() {
         mState = getState();
         Log.d(TAG, "updateUserInterfaceTitle() " + mNewState + " -> " + mState);
