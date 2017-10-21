@@ -116,6 +116,12 @@ public class BluetoothPresenter {
         updateUserInterfaceTitle();
     }
 
+/**
+* @author: magic
+* @Time: 2017/10/21 23:56
+*
+*/
+
     /**
      * @Author : magic
      * @Time : 17/10/13 下午4:53
