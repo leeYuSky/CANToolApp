@@ -40,12 +40,16 @@ import com.example.liyuze.cantoolapp.R;
 import com.example.liyuze.cantoolapp.mvp.constants.Constants;
 import com.example.liyuze.cantoolapp.mvp.model.signal;
 import com.example.liyuze.cantoolapp.mvp.presenter.BluetoothPresenter;
+import com.example.liyuze.cantoolapp.mvp.utils.CANMessageUtil;
+import com.example.liyuze.cantoolapp.mvp.utils.DBUtil;
 import com.example.liyuze.cantoolapp.mvp.utils.datatableUtil;
 import com.example.liyuze.cantoolapp.mvp.view.fragment.DataFragment;
 import com.example.liyuze.cantoolapp.mvp.view.fragment.DownloadFragment;
 import com.example.liyuze.cantoolapp.mvp.view.fragment.HomeFragment;
 import com.example.liyuze.cantoolapp.mvp.view.fragment.UploadFragment;
 import com.example.liyuze.cantoolapp.mvp.view.mvpView.MvpMainView;
+
+import org.litepal.tablemanager.Connector;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -54,6 +58,7 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -127,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
 
         getLocationPermissons();
 
+
 //        mConversationView = (ListView) findViewById(R.id.in);
 //        mOutEditText = (EditText) findViewById(R.id.edit_text_out);
 //        mSendButton = (Button) findViewById(R.id.button_send);
@@ -171,6 +177,8 @@ public class MainActivity extends AppCompatActivity {
                 mBluetoothPresenter.start();
             }
         }
+
+        Connector.getDatabase();
 
     }
 
@@ -524,7 +532,7 @@ public class MainActivity extends AppCompatActivity {
                     byte[] writeBuf = (byte[]) msg.obj;
                     // construct a string from the buffer
                     String writeMessage = new String(writeBuf);
-                    mConversationArrayAdapter.add("Me:  " + writeMessage);
+//                    mConversationArrayAdapter.add("Me:  " + writeMessage);
                     break;
                 case Constants.MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
@@ -534,13 +542,23 @@ public class MainActivity extends AppCompatActivity {
                     if(temp == '\r')
                     {
                         readMessage = "OK";
+                        showToast(readMessage);
                     }
                     else if((int) temp == 7 )
                     {
                         readMessage = "Error";
+                        showToast(readMessage);
+                    }else if(readMessage.length() == 22 || readMessage.length() == 27){
+                        Log.e(TAG, "-----------当前message为：" + readMessage + "---------------------");
+                        mConversationArrayAdapter.add(mConnectedDeviceName + ":  " + readMessage);
+                        DBUtil.insertSignal(readMessage);
+                    }else{
+                        readMessage = "未知错误";
+                        showToast(readMessage);
                     }
-                    Log.e(TAG,"-----------当前message为："+readMessage +"---------------------");
-                    mConversationArrayAdapter.add(mConnectedDeviceName + ":  " + readMessage);
+
+
+
                     break;
                 case Constants.MESSAGE_DEVICE_NAME:
                     // save the connected device's name

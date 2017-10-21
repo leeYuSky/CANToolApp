@@ -57,7 +57,7 @@ public class CANMessageUtil {
         String data = msg.substring(5);
         Map<String,Double> result = new HashMap<>();
 
-        if(data.length() != byteCount * 2){
+        if(data.length() != byteCount * 2+1){
             // TODO
         }else{
             String binaryData = parseHexToBinary(data);
@@ -216,6 +216,16 @@ public class CANMessageUtil {
         }
 
         return result.toString();
+    }
+
+    public static int getId(String msg){
+        if(msg.charAt(0) == 't') {
+            return Integer.parseInt(msg.substring(1,4),16);
+        }else if(msg.charAt(0) == 'T'){
+            return Integer.parseInt(msg.substring(1,9),16);
+        }else{
+            return Integer.MIN_VALUE;
+        }
     }
 
 
