@@ -217,6 +217,7 @@ public class MainActivity extends AppCompatActivity {
                         if (mHomeFragment == null) {
                             mHomeFragment = HomeFragment.newInstance("Home");
                         }
+
 //                        if(!mHomeFragment.isAdded()){
 //                            transaction.add(R.id.layFrame, mHomeFragment,HomeFragment.TAG);
 //                        }
@@ -236,6 +237,7 @@ public class MainActivity extends AppCompatActivity {
 //                            }
 //                        }
 //                        transaction.show(mHomeFragment);
+
                         transaction.replace(R.id.layFrame,mHomeFragment);
 
                         break;

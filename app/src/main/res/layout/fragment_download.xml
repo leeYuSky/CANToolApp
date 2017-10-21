@@ -1,14 +1,28 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.liyuze.cantoolapp.mvp.view.fragment.DownloadFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:id="@+id/fg_download"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:text="@string/hello_blank_fragment" />
 
-</FrameLayout>
+    <Button
+        android:id="@+id/get_version_bt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="版本信息"/>
+
+    <Button
+        android:id="@+id/open_close_bt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="打开CANTool"/>
+
+
+</LinearLayout>

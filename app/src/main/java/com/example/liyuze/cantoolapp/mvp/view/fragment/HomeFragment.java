@@ -111,7 +111,15 @@ public class HomeFragment extends Fragment {
         mOutEditText =  view.findViewById(R.id.edit_text_out);
         mSendButton = view.findViewById(R.id.button_send);
 
-        mConversationArrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1);
+        MainActivity activity = (MainActivity) getActivity();
+        if(activity.mConversationArrayAdapter != null){
+            mConversationArrayAdapter = activity.mConversationArrayAdapter;
+        }else{
+            mConversationArrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1);
+            activity.mConversationArrayAdapter = mConversationArrayAdapter;
+        }
+
+//        mConversationArrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1);
         mConversationView.setAdapter(mConversationArrayAdapter);
         mOutEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -132,8 +140,8 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        MainActivity activity = (MainActivity) getActivity();
-        activity.mConversationArrayAdapter = mConversationArrayAdapter;
+//        MainActivity activity = (MainActivity) getActivity();
+//        activity.mConversationArrayAdapter = mConversationArrayAdapter;
 
         return view;
     }
