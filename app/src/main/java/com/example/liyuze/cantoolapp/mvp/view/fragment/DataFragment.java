@@ -1,6 +1,7 @@
 package com.example.liyuze.cantoolapp.mvp.view.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import com.example.liyuze.cantoolapp.mvp.adapter.MyExpandableListViewAdapter;
 import com.example.liyuze.cantoolapp.mvp.constants.Constants;
 import com.example.liyuze.cantoolapp.mvp.model.signal;
 import com.example.liyuze.cantoolapp.mvp.view.activity.MainActivity;
+import com.example.liyuze.cantoolapp.mvp.view.activity.SignalDataActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -88,6 +90,10 @@ public class DataFragment extends Fragment {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 Toast.makeText(getActivity(), "第"+groupPosition+"组的第"+childPosition+"被点击了", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getActivity(), SignalDataActivity.class);
+                intent.putExtra("groupName",parentList[groupPosition]);
+                intent.putExtra("childPosition",childPosition);
+                startActivity(intent);
                 return true;
             }
         });

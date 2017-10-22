@@ -131,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         getLocationPermissons();
+        Connector.getDatabase();
 
 
 //        mConversationView = (ListView) findViewById(R.id.in);
@@ -178,7 +179,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        Connector.getDatabase();
 
     }
 

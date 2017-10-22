@@ -16,6 +16,7 @@
 
 package com.example.liyuze.cantoolapp.mvp.constants;
 
+import com.example.liyuze.cantoolapp.mvp.model.canmessage;
 import com.example.liyuze.cantoolapp.mvp.model.signal;
 
 import java.util.ArrayList;
@@ -41,5 +42,6 @@ public class Constants {
 
     // 对照数据表
     public static Map<String,List<signal>> DATATABLE = new HashMap<>();
+    public static Map<String,canmessage> MESSAGETABLE = new HashMap<>();
 
 }

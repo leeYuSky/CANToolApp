@@ -10,6 +10,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.liyuze.cantoolapp.R;
+import com.example.liyuze.cantoolapp.mvp.constants.Constants;
+import com.example.liyuze.cantoolapp.mvp.model.canmessage;
 import com.example.liyuze.cantoolapp.mvp.model.signal;
 import com.example.liyuze.cantoolapp.mvp.view.activity.MainActivity;
 
@@ -80,7 +82,8 @@ public class MyExpandableListViewAdapter extends BaseExpandableListAdapter {
         ImageView image = convertView.findViewById(R.id.open_close_parent);
         ImageView message = convertView.findViewById(R.id.parent_message_icon);
         TextView text = convertView.findViewById(R.id.parent_title);
-        text.setText(parentList[groupPosition]);
+        canmessage mess = Constants.MESSAGETABLE.get(parentList[groupPosition]);
+        text.setText(mess.getMessageName());
         message.setImageResource(R.mipmap.ic_message_menu);
         if(isExpanded){
             image.setImageResource(R.mipmap.ic_close_menu);

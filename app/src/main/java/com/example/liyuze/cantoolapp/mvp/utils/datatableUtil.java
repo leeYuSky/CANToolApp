@@ -5,6 +5,7 @@ import android.content.res.AssetManager;
 import android.util.Log;
 
 import com.example.liyuze.cantoolapp.mvp.constants.Constants;
+import com.example.liyuze.cantoolapp.mvp.model.canmessage;
 import com.example.liyuze.cantoolapp.mvp.model.signal;
 
 import java.io.BufferedReader;
@@ -71,6 +72,10 @@ public class datatableUtil {
                                     temp[11]));
                         }
                         DATATABLE.put(temp[1],list);
+                        Constants.MESSAGETABLE.put(temp[1],
+                                new canmessage(temp[0].substring(0,temp[0].length()-1),
+                                        temp[1],
+                                        Integer.parseInt(temp[2])));
                     }
                 }
             }
