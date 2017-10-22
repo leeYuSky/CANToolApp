@@ -176,14 +176,7 @@ public class SignalDataActivity extends AppCompatActivity {
         pointValueList = new ArrayList<PointValue>();
         linesList = new ArrayList<Line>();
 
-        /** 初始化Y轴 */
-        axisY = new Axis();
-        axisY.setName("浓度（单位：XX）");//添加Y轴的名称
-        axisY.setHasLines(true);//Y轴分割线
-        axisY.setTextSize(10);//设置字体大小
-//        axisY.setTextColor(Color.parseColor("#AFEEEE"));//设置Y轴颜色，默认浅灰色
-        lineChartData = new LineChartData(linesList);
-        lineChartData.setAxisYLeft(axisY);//设置Y轴在左边
+        System.out.println();
 
         /** 初始化X轴 */
         axisX = new Axis();
