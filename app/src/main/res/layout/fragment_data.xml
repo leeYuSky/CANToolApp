@@ -4,11 +4,16 @@
     android:layout_height="match_parent"
     tools:context="com.example.liyuze.cantoolapp.mvp.view.fragment.DataFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/fg_data"
+    <!--&lt;!&ndash; TODO: Update blank fragment layout &ndash;&gt;-->
+    <!--<TextView-->
+        <!--android:id="@+id/fg_data"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:text="@string/hello_blank_fragment" />-->
+
+    <ExpandableListView
+        android:id="@+id/expandablelistview_data"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content" />
 
 </FrameLayout>
