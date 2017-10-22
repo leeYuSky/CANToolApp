@@ -74,6 +74,7 @@ public class BluetoothPresenter {
      * @Description :
      * Update UI title according to the current state of the chat connection
      * */
+    // 更新标题栏子标题
     private synchronized void updateUserInterfaceTitle() {
         mState = getState();
         Log.d(TAG, "updateUserInterfaceTitle() " + mNewState + " -> " + mState);
@@ -90,6 +91,7 @@ public class BluetoothPresenter {
      * Start the chat service. Specifically start AcceptThread to begin a
      * session in listening (server) mode. Called by the Activity onResume()
      * */
+    // 开启服务器监听模式
     public synchronized void start() {
         Log.d(TAG, "start");
 
@@ -113,6 +115,12 @@ public class BluetoothPresenter {
         // Update UI title
         updateUserInterfaceTitle();
     }
+
+/**
+* @author: magic
+* @Time: 2017/10/21 23:56
+*
+*/
 
     /**
      * @Author : magic
