@@ -210,4 +210,24 @@ import android.view.View;
         outerAnimPaint.setStyle(Paint.Style.STROKE);
         outerAnimPaint.setAntiAlias(true);
         outerAnimPaint.setStrokeWidth(whiteCirclePaintWidth);
+     
+        carBitmap = BitmapFactory.decodeResource(getResources(),R.mipmap.car1);
 
+        linearGradient = new LinearGradient(0, 0, 50, 50, new int[] {
+                Color.parseColor("#A4D3EE"),  Color.parseColor("#9400D3"), Color.parseColor("#43CD80"), Color.parseColor("#528B8B") }, null,
+                Shader.TileMode.REPEAT);
+        outerPaint.setShader(linearGradient);
+    }
+    public CarRecorderView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+        widthSize = heightSize > widthSize ?widthSize:heightSize;
+        heightSize = heightSize > widthSize ?widthSize:heightSize;
+        setMeasuredDimension(widthSize,heightSize);
+        height = width = widthSize;
+   }
