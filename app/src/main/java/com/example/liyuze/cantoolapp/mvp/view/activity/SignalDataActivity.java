@@ -161,7 +161,7 @@ public class SignalDataActivity extends AppCompatActivity {
         lineChart.startDataAnimation();
 
         Line line = new Line(mPointValues);
-        LineChartValueFormatter formatter = new SimpleLineChartValueFormatter(2);
+        LineChartValueFormatter formatter = new SimpleLineChartValueFormatter(2); //  用来显示小数，保存两位
         line.setFormatter(formatter);
         line.setColor(Color.parseColor("#FFCD41"));//设置折线颜色
         line.setShape(ValueShape.CIRCLE);//设置折线图上数据点形状为 圆形 （共有三种 ：ValueShape.SQUARE  ValueShape.CIRCLE  ValueShape.DIAMOND）

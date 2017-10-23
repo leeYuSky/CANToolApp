@@ -33,8 +33,10 @@
             android:theme="@style/Theme.AppCompat.Light.Dialog" />
         <activity
             android:name=".mvp.view.activity.SignalDataActivity"
-            android:theme="@style/Theme.AppCompat.Light.Dialog"
-            />
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
+        <activity
+            android:name=".mvp.view.activity.UploadDataActivity"
+            android:theme="@style/Theme.AppCompat.Light.Dialog"/>
     </application>
 
 </manifest>

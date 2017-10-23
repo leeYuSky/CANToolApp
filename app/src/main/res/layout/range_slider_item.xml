@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:id="@+id/slider_item_lee">
+
+    <TextView
+        android:id="@+id/rangeSeekbar_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="hahaha"/>
+
+    <!--<com.jaygoo.widget.RangeSeekBar-->
+        <!--android:id="@+id/rangeSeekbar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--app:lineColorSelected="@color/colorAccent"-->
+        <!--app:thumbResId="@drawable/seekbar_thumb"-->
+        <!--app:lineColorEdge="@color/colorSeekBarDefault"-->
+        <!--app:seekBarMode="single"-->
+        <!--app:max="50"-->
+        <!--app:min="-50"-->
+    <!--/>-->
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/darkgray"/>
+
+
+
+</LinearLayout>
