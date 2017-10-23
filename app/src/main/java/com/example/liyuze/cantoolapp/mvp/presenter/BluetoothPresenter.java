@@ -25,6 +25,11 @@ import java.util.UUID;
 
 public class BluetoothPresenter {
 
+
+    public int sum(int x, int y){
+        return x+y;
+    }
+
     private static final String TAG = "BluetoothPresenter";
 
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
