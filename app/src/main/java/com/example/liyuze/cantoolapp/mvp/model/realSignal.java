@@ -13,7 +13,7 @@ public class realSignal extends DataSupport {
     private String messageUUID;
     private Integer messageId;
     private String signalName;
-    private Double realValue;
+    private double realValue;
     private Date date;
 
     public realSignal(){
@@ -52,11 +52,11 @@ public class realSignal extends DataSupport {
         this.signalName = signalName;
     }
 
-    public Double getRealValue() {
+    public double getRealValue() {
         return realValue;
     }
 
-    public void setRealValue(Double realValue) {
+    public void setRealValue(double realValue) {
         this.realValue = realValue;
     }
 

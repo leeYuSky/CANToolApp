@@ -27,17 +27,26 @@ public class DBUtil {
             new realSignal(messageUUID,messageId,entry.getKey(),entry.getValue(),new Date()).save();
         }
 
-//        List<realSignal> realSignals = DataSupport.findAll(realSignal.class);
-//
-//        for(realSignal signal : realSignals){
-//            Log.e(TAG,"{");
-//            Log.e(TAG,"   "+ signal.getMessageUUID());
-//            Log.e(TAG,"   " + signal.getMessageId());
-//            Log.e(TAG,"   " + signal.getSignalName());
-//            Log.e(TAG,"   " + signal.getRealValue());
-//            Log.e(TAG,"   " + signal.getDate());
-//            Log.e(TAG,"}");
-//        }
+        List<realSignal> realSignals = DataSupport.findAll(realSignal.class);
 
+        for(realSignal signal : realSignals){
+            Log.e(TAG,"{");
+            Log.e(TAG,"   "+ signal.getMessageUUID());
+            Log.e(TAG,"   " + signal.getMessageId());
+            Log.e(TAG,"   " + signal.getSignalName());
+            Log.e(TAG,"   " + signal.getRealValue());
+            Log.e(TAG,"   " + signal.getDate());
+            Log.e(TAG,"}");
+        }
+
+    }
+
+    public static List<realSignal> getRealSignal(int count,String signalName){
+        List<realSignal> realSignals = DataSupport
+                .where("signalName = ?",signalName)
+                .order("date desc")
+                .limit(count)
+                .find(realSignal.class);
+        return realSignals;
     }
 }
