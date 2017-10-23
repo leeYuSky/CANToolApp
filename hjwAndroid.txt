@@ -230,4 +230,36 @@ import android.view.View;
         heightSize = heightSize > widthSize ?widthSize:heightSize;
         setMeasuredDimension(widthSize,heightSize);
         height = width = widthSize;
+		//10.23
+		
+	public static double multi(int n)
+	{
+		if(n<0)
+			throw new IllegalArgumentException("求负数阶乘异常");
+		double s=1;
+		for(int i=1;i<=n;i++)
+			s=s*i;
+		return s;
+	}
+	public static void main(String[] args) {
+		
+		// TODO Auto-generated method stub
+try
+{
+	//args[0]="3";
+	int m=Integer.parseInt(args[0]);
+	System.out.println(m+"！="+multi(m));
+}
+catch(ArrayIndexOutOfBoundsException e)
+{
+	System.out.println("命令行中没有提供参数");
+}
+
+finally
+{
+	System.out.println("程序运行结束！");
+}
+	}
+
+}
    }
