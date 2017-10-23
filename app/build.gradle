@@ -34,12 +34,15 @@ dependencies {
 //    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.1.1'
     testCompile 'junit:junit:4.12'
-    
+
 
     // litepal
     
     compile 'com.ashokvarma.android:bottom-navigation-bar:2.0.3'
+    // litepal
     compile 'org.litepal.android:core:1.3.2'
+    // hellochart
+    compile 'com.github.lecho:hellocharts-library:1.5.8@aar'
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:support-v4:26.+'

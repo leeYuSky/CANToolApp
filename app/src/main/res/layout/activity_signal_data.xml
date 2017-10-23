@@ -1,15 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.liyuze.cantoolapp.mvp.view.activity.SignalDataActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.liyuze.cantoolapp.mvp.view.activity.SignalDataActivity"
+    android:scrollbars="none">
 
-
-    <TextView
-        android:id="@+id/my"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-</LinearLayout>
+
+        <TextView
+            android:id="@+id/my"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:text="折线图"/>
+
+        <lecho.lib.hellocharts.view.LineChartView
+            android:id="@+id/line_chart"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_margin="5dp"
+            android:background="#ffffff"/>
+
+    </LinearLayout>
+</ScrollView>
