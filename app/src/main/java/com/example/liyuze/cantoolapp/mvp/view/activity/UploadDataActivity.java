@@ -93,8 +93,11 @@ public class UploadDataActivity extends AppCompatActivity {
                     Log.e(TAG,"速率解析错误！");
                 }
 
-                String messageSend = result + speed;
+                String messageSend = result + speed.toString().toUpperCase();
                 Log.e(TAG,"------------messageSend-----------------" + messageSend);
+
+                MainActivity.mainActivity.sendMessage(messageSend);
+                finish();
 
 
 

@@ -89,7 +89,7 @@ public class DataFragment extends Fragment {
         listview.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                Toast.makeText(getActivity(), "第"+groupPosition+"组的第"+childPosition+"被点击了", Toast.LENGTH_LONG).show();
+//                Toast.makeText(getActivity(), "第"+groupPosition+"组的第"+childPosition+"被点击了", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getActivity(), SignalDataActivity.class);
                 intent.putExtra("groupName",parentList[groupPosition]);
                 intent.putExtra("childPosition",childPosition);

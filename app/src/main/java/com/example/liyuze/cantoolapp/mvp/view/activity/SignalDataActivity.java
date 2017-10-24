@@ -104,80 +104,84 @@ public class SignalDataActivity extends AppCompatActivity {
 
     private void myInitLineChar(){
         List<realSignal> list =  getRealSignal(5,currentSignal.getName());
-        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        for(int i = 0;i < list.size();i++){
-            Log.e(TAG,"{");
-            Log.e(TAG,"   "+ list.get(i).getMessageUUID());
-            Log.e(TAG,"   " + list.get(i).getMessageId());
-            Log.e(TAG,"   " + list.get(i).getSignalName());
-            Log.e(TAG,"   " + list.get(i).getRealValue());
-            Log.e(TAG,"   " + list.get(i).getDate());
-            Log.e(TAG,"}");
+        if(list.size() > 0) {
 
-            mAxisXValues.add(new AxisValue(i).setLabel(format.format(list.get(i).getDate()).split(" ")[1]));
-            Log.e(TAG,String.valueOf((float)(list.get(i).getRealValue())));
-            mPointValues.add(new PointValue(i, (float) (list.get(i).getRealValue())));
+            SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            for (int i = list.size() - 1; i >= 0; i--) {
+                Log.e(TAG, "{");
+                Log.e(TAG, "   " + list.get(i).getMessageUUID());
+                Log.e(TAG, "   " + list.get(i).getMessageId());
+                Log.e(TAG, "   " + list.get(i).getSignalName());
+                Log.e(TAG, "   " + list.get(i).getRealValue());
+                Log.e(TAG, "   " + list.get(i).getDate());
+                Log.e(TAG, "}");
 
-        }
+                mAxisXValues.add(new AxisValue(i).setLabel(format.format(list.get(i).getDate()).split(" ")[1]));
+                Log.e(TAG, String.valueOf((float) (list.get(i).getRealValue())));
+                mPointValues.add(new PointValue(i, (float) (list.get(i).getRealValue())));
 
-        ArrayList<Line> linesList = new ArrayList<Line>();
+            }
 
-        /** 初始化Y轴 */
-        Axis axisY = new Axis();
-        axisY.setName("单位:"+currentSignal.getUnit().substring(1,currentSignal.getUnit().length()-1));//添加Y轴的名称
-        axisY.setHasLines(true);//Y轴分割线
-        axisY.setTextSize(10);//设置字体大小
+
+            ArrayList<Line> linesList = new ArrayList<Line>();
+
+            /** 初始化Y轴 */
+            Axis axisY = new Axis();
+            axisY.setName("单位:" + currentSignal.getUnit().substring(1, currentSignal.getUnit().length() - 1));//添加Y轴的名称
+            axisY.setHasLines(true);//Y轴分割线
+            axisY.setTextSize(10);//设置字体大小
 //        axisY.setTextColor(Color.parseColor("#AFEEEE"));//设置Y轴颜色，默认浅灰色
-        LineChartData lineChartData = new LineChartData(linesList);
-        lineChartData.setAxisYLeft(axisY);//设置Y轴在左边
+            LineChartData lineChartData = new LineChartData(linesList);
+            lineChartData.setAxisYLeft(axisY);//设置Y轴在左边
 
-        /** 初始化X轴 */
-        Axis axisX = new Axis();
-        axisX.setHasTiltedLabels(false);//X坐标轴字体是斜的显示还是直的，true是斜的显示
+            /** 初始化X轴 */
+            Axis axisX = new Axis();
+            axisX.setHasTiltedLabels(false);//X坐标轴字体是斜的显示还是直的，true是斜的显示
 //        axisX.setTextColor(Color.CYAN);//设置X轴颜色
-        axisX.setName("时间("+ format.format(list.get(0).getDate()).split(" ")[0]+")");//X轴名称
-        axisX.setHasLines(true);//X轴分割线
-        axisX.setTextSize(10);//设置字体大小
-        axisX.setMaxLabelChars(1);//设置0的话X轴坐标值就间隔为1
+            axisX.setName("时间(" + format.format(list.get(0).getDate()).split(" ")[0] + ")");//X轴名称
+            axisX.setHasLines(true);//X轴分割线
+            axisX.setTextSize(10);//设置字体大小
+            axisX.setMaxLabelChars(1);//设置0的话X轴坐标值就间隔为1
 
-        axisX.setValues(mAxisXValues);//填充X轴的坐标名称
-        lineChartData.setAxisXBottom(axisX);//X轴在底部
+            axisX.setValues(mAxisXValues);//填充X轴的坐标名称
+            lineChartData.setAxisXBottom(axisX);//X轴在底部
 
-        lineChart.setLineChartData(lineChartData);
+            lineChart.setLineChartData(lineChartData);
 
 //        Viewport port = initViewPort(0,10);//初始化X轴10个间隔坐标
-        Viewport port = new Viewport();
-        port.top = (float) currentSignal.getMax();//Y轴上限，固定(不固定上下限的话，Y轴坐标值可自适应变化)
-        port.bottom = (float) currentSignal.getMin();//Y轴下限，固定
-        port.left = 0;//X轴左边界，变化
-        port.right = 4;//X轴右边界，变化
-        lineChart.setCurrentViewportWithAnimation(port);
-        lineChart.setInteractive(false);//设置不可交互
-        lineChart.setScrollEnabled(true);
-        lineChart.setValueTouchEnabled(false);
-        lineChart.setFocusableInTouchMode(false);
-        lineChart.setViewportCalculationEnabled(false);
-        lineChart.setContainerScrollEnabled(true, ContainerScrollType.HORIZONTAL);
-        lineChart.startDataAnimation();
+            Viewport port = new Viewport();
+            port.top = (float) currentSignal.getMax();//Y轴上限，固定(不固定上下限的话，Y轴坐标值可自适应变化)
+            port.bottom = (float) currentSignal.getMin();//Y轴下限，固定
+            port.left = 0;//X轴左边界，变化
+            port.right = 4;//X轴右边界，变化
+            lineChart.setCurrentViewportWithAnimation(port);
+            lineChart.setInteractive(false);//设置不可交互
+            lineChart.setScrollEnabled(true);
+            lineChart.setValueTouchEnabled(false);
+            lineChart.setFocusableInTouchMode(false);
+            lineChart.setViewportCalculationEnabled(false);
+            lineChart.setContainerScrollEnabled(true, ContainerScrollType.HORIZONTAL);
+            lineChart.startDataAnimation();
 
-        Line line = new Line(mPointValues);
-        LineChartValueFormatter formatter = new SimpleLineChartValueFormatter(2); //  用来显示小数，保存两位
-        line.setFormatter(formatter);
-        line.setColor(Color.parseColor("#FFCD41"));//设置折线颜色
-        line.setShape(ValueShape.CIRCLE);//设置折线图上数据点形状为 圆形 （共有三种 ：ValueShape.SQUARE  ValueShape.CIRCLE  ValueShape.DIAMOND）
-        line.setCubic(false);//曲线是否平滑，true是平滑曲线，false是折线
-        line.setHasLabels(true);//数据是否有标注
+            Line line = new Line(mPointValues);
+            LineChartValueFormatter formatter = new SimpleLineChartValueFormatter(2); //  用来显示小数，保存两位
+            line.setFormatter(formatter);
+            line.setColor(Color.parseColor("#FFCD41"));//设置折线颜色
+            line.setShape(ValueShape.CIRCLE);//设置折线图上数据点形状为 圆形 （共有三种 ：ValueShape.SQUARE  ValueShape.CIRCLE  ValueShape.DIAMOND）
+            line.setCubic(false);//曲线是否平滑，true是平滑曲线，false是折线
+            line.setHasLabels(true);//数据是否有标注
 //        line.setHasLabelsOnlyForSelected(true);//点击数据坐标提示数据,设置了line.setHasLabels(true);之后点击无效
-        line.setHasLines(true);//是否用线显示，如果为false则没有曲线只有点显示
-        line.setHasPoints(true);//是否显示圆点 ，如果为false则没有原点只有点显示（每个数据点都是个大圆点）
-        linesList.add(line);
-        lineChartData = new LineChartData(linesList);
-        lineChartData.setAxisYLeft(axisY);//设置Y轴在左
-        lineChartData.setAxisXBottom(axisX);//X轴在底部
-        lineChart.setLineChartData(lineChartData);
+            line.setHasLines(true);//是否用线显示，如果为false则没有曲线只有点显示
+            line.setHasPoints(true);//是否显示圆点 ，如果为false则没有原点只有点显示（每个数据点都是个大圆点）
+            linesList.add(line);
+            lineChartData = new LineChartData(linesList);
+            lineChartData.setAxisYLeft(axisY);//设置Y轴在左
+            lineChartData.setAxisXBottom(axisX);//X轴在底部
+            lineChart.setLineChartData(lineChartData);
 
-        lineChart.setMaximumViewport(port);
-        lineChart.setCurrentViewport(port);
+            lineChart.setMaximumViewport(port);
+            lineChart.setCurrentViewport(port);
+        }
 
 
 

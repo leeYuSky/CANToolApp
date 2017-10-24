@@ -63,14 +63,18 @@ public class CANMessageUtil {
         for(int i = 0;i < signals.size();i++){
             if(data.containsKey(signals.get(i).getName())){
                 signal s = signals.get(i);
-                int start = getStart(s.getStart());
-                int length = s.getLength();
-                double a = s.getA();
-                double offset = s.getOffset();
-                double realvalue = data.get(signals.get(i).getName());
-                int value = (int) ((realvalue - offset) / a);
-                String valueString = Integer.toBinaryString(value);
-                sb.replace(start + length - valueString.length(),start + length,valueString);
+                if(s.getType() == 0) {
+                    int start = getStart(s.getStart());
+                    int length = s.getLength();
+                    double a = s.getA();
+                    double offset = s.getOffset();
+                    double realvalue = data.get(signals.get(i).getName());
+                    int value = (int) ((realvalue - offset) / a);
+                    String valueString = Integer.toBinaryString(value);
+                    sb.replace(start + length - valueString.length(), start + length, valueString);
+                }else{
+                    // TODO
+                }
 
             }
         }
