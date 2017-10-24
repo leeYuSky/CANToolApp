@@ -2,6 +2,7 @@ package com.example.liyuze.cantoolapp.mvp.view.activity;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -22,10 +24,13 @@ import com.example.liyuze.cantoolapp.R;
 import com.example.liyuze.cantoolapp.mvp.constants.Constants;
 import com.example.liyuze.cantoolapp.mvp.model.canmessage;
 import com.example.liyuze.cantoolapp.mvp.model.signal;
+import com.example.liyuze.cantoolapp.mvp.utils.CANMessageUtil;
 
 import org.w3c.dom.Text;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.jaygoo.widget.R.id.number;
 import static com.jaygoo.widget.R.id.single;
@@ -38,6 +43,7 @@ public class UploadDataActivity extends AppCompatActivity {
 
     List<signal> list;
     canmessage canmessage;
+    int current = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +54,7 @@ public class UploadDataActivity extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        String messageId = intent.getStringExtra("messageId");
+        final String messageId = intent.getStringExtra("messageId");
 
         list = Constants.DATATABLE.get(messageId);
         canmessage = Constants.MESSAGETABLE.get(messageId);
@@ -59,6 +65,65 @@ public class UploadDataActivity extends AppCompatActivity {
         for(int i = 0;i < list.size();i++){
             addViewItem(i);
         }
+
+        Button bt = (Button) findViewById(R.id.btn_getData);
+        bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Map<String,Double> map = new HashMap<String, Double>();
+                for(int i = 0;i < linearLayout.getChildCount();i++){
+                    View childAt = linearLayout.getChildAt(i);
+                    com.jaygoo.widget.RangeSeekBar seekBar = childAt.findViewById(R.id.rangeSeekbar);
+                    TextView textView = childAt.findViewById(R.id.rangeSeekbar_text);
+                    float[] list = seekBar.getCurrentRange();
+//                    Log.e(TAG,textView.getText()+"  ------   "+String.valueOf(list[0]));
+                    map.put((String) textView.getText(),(double)list[0]);
+                }
+                String result = CANMessageUtil.MessageStringify(canmessage.getMessageId(),map);
+                EditText editText = (EditText) findViewById(R.id.speed_edit);
+                StringBuilder speed = new StringBuilder("0400"); //1024
+                try{
+                    int speedInt = Integer.parseInt(editText.getText().toString());
+                    if(speedInt >= 0 && speedInt <= 65535) {
+                        String temp = Integer.toHexString(speedInt);
+                        speed.replace(4-temp.length(),4,temp);
+                    }
+
+                }catch (Exception e){
+                    Log.e(TAG,"速率解析错误！");
+                }
+
+                String messageSend = result + speed;
+                Log.e(TAG,"------------messageSend-----------------" + messageSend);
+
+
+
+//                Map<String, Double> data = new HashMap<>();
+//                data.put("HVAC_AirCompressorSt", (double) 0);
+//                data.put("HVAC_CorrectedExterTempVD", (double) 0);
+//                data.put("HVAC_RawExterTempVD", (double) 0);
+//                data.put("HVAC_EngIdleStopProhibitReq", (double) 0);
+//                data.put("HVAC_ACSt", (double) 0);
+//                data.put("HVAC_ACmaxSt", (double) 1);
+//                data.put("HVAC_CorrectedExterTemp",-4.5);
+//                data.put("HVAC_RawExterTemp", (double) 30);
+//                data.put("HVAC_TempSelect",25.5);
+//                data.put("HVAC_DualSt", (double) 1);
+//                data.put("HVAC_AutoSt", (double) 0);
+//                data.put("HVAC_Type", (double) 0);
+//                data.put("HVAC_WindExitMode", (double) 5);
+//                data.put("HVAC_SpdFanReq", (double) 0);
+//                data.put("HVAC_TelematicsSt", (double) 1);
+//                data.put("HVAC_AirCirculationSt", (double) 1);
+//                data.put("HVAC_PopUpDisplayReq", (double) 1);
+//                data.put("HVAC_DriverTempSelect",22.5);
+//                data.put("HVAC_IonMode", (double) 3);
+//                data.put("HVAC_WindExitSpd", (double) 10);
+//                data.put("HVAC_PsnTempSelect",22.5);
+//
+//                CANMessageUtil.MessageStringify("800",data);
+            }
+        });
 
 
 
@@ -108,22 +173,45 @@ public class UploadDataActivity extends AppCompatActivity {
 
     private void addViewItem(int index) {
 
-        View rangeSliderView = View.inflate(this, R.layout.range_slider_item, null);
+        if(list.get(index).getMin() < list.get(index).getMax()) {
 
-        LinearLayout linearLayout_item = rangeSliderView.findViewById(R.id.slider_item_lee);
+            View rangeSliderView = View.inflate(this, R.layout.range_slider_item, null);
 
-        TextView textView = rangeSliderView.findViewById(R.id.rangeSeekbar_text);
-        textView.setText(list.get(index).getName());
+            LinearLayout linearLayout_item = rangeSliderView.findViewById(R.id.slider_item_lee);
 
-        com.jaygoo.widget.RangeSeekBar rangeSeekBar = new com.jaygoo.widget.RangeSeekBar(this);
-        rangeSeekBar.setId(R.id.rangeSeekbar);
-        rangeSeekBar.setSeekBarMode(single);
-        rangeSeekBar.setRules((float) list.get(index).getMin(), (float) list.get(index).getMax(),0,1);
-        rangeSeekBar.setCellMode(number);
+            TextView textView = rangeSliderView.findViewById(R.id.rangeSeekbar_text);
+            textView.setText(list.get(index).getName());
 
-        linearLayout_item.addView(rangeSeekBar);
 
-        linearLayout.addView(rangeSliderView);
+            com.jaygoo.widget.RangeSeekBar rangeSeekBar = new com.jaygoo.widget.RangeSeekBar(this);
+            rangeSeekBar.setId(R.id.rangeSeekbar);
+            rangeSeekBar.setSeekBarMode(single);
+            rangeSeekBar.setRules((float) list.get(index).getMin(), (float) list.get(index).getMax(), 0, 1);
+            rangeSeekBar.setCellMode(number);
+            rangeSeekBar.setThumbResId(R.drawable.seekbar_thumb);
+
+            if(current % 2 == 0){
+                textView.setTextColor(Color.WHITE);
+                linearLayout_item.setBackgroundColor(getResources().getColor(R.color.darkgray));
+            }
+
+            linearLayout_item.addView(rangeSeekBar);
+
+
+            linearLayout.addView(rangeSliderView);
+            current++;
+        }
+
+    }
+
+    private void printData(){
+        for(int i = 0;i < linearLayout.getChildCount();i++){
+            View childAt = linearLayout.getChildAt(i);
+            com.jaygoo.widget.RangeSeekBar seekBar = childAt.findViewById(R.id.rangeSeekbar);
+            TextView textView = childAt.findViewById(R.id.rangeSeekbar_text);
+            float[] list = seekBar.getCurrentRange();
+            Log.e(TAG,textView.getText()+"  ------   "+String.valueOf(list[0]));
+        }
 
     }
 

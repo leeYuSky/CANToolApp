@@ -1,6 +1,9 @@
 package com.example.liyuze.cantoolapp.mvp.utils;
 
+import android.util.Log;
+
 import com.example.liyuze.cantoolapp.mvp.constants.Constants;
+import com.example.liyuze.cantoolapp.mvp.model.canmessage;
 import com.example.liyuze.cantoolapp.mvp.model.signal;
 
 import java.util.Arrays;
@@ -13,6 +16,8 @@ import java.util.Map;
  */
 
 public class CANMessageUtil {
+
+    public static final String TAG = CANMessageUtil.class.toString();
 
     /**
      * @Author : magic
@@ -41,7 +46,50 @@ public class CANMessageUtil {
      * @Description :
      * 生成CAN Message
      */
-    public static void MessageStringify(Map<String, Double> data) {
+    public static String MessageStringify(String messageId,Map<String, Double> data) {
+//        Log.e(TAG,"-------------------");
+//        Log.e(TAG,messageId);
+//        for(Map.Entry<String,Double> entry : data.entrySet()){
+//            Log.e(TAG,entry.getKey()+" ------- "+entry.getValue());
+//        }
+
+        List<signal> signals = Constants.DATATABLE.get(messageId);
+        canmessage messgae = Constants.MESSAGETABLE.get(messageId);
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0;i < messgae.getByteCount();i++){
+            sb.append("00000000");
+        }
+
+        for(int i = 0;i < signals.size();i++){
+            if(data.containsKey(signals.get(i).getName())){
+                signal s = signals.get(i);
+                int start = getStart(s.getStart());
+                int length = s.getLength();
+                double a = s.getA();
+                double offset = s.getOffset();
+                double realvalue = data.get(signals.get(i).getName());
+                int value = (int) ((realvalue - offset) / a);
+                String valueString = Integer.toBinaryString(value);
+                sb.replace(start + length - valueString.length(),start + length,valueString);
+
+            }
+        }
+
+        String resultString = parseBinaryToHex(sb.toString());
+
+        StringBuilder result = new StringBuilder("t");
+        StringBuilder id = new StringBuilder("000000000000");
+        String binaryId = Integer.toBinaryString(Integer.parseInt(messageId));
+        id.replace(id.length()-binaryId.length(),id.length(),binaryId);
+        String hexId = parseBinaryToHex(id.toString());
+        result.append(hexId);
+        result.append(messgae.getByteCount());
+        result.append(resultString);
+
+        Log.e(TAG,"Result ： " + result.toString());
+
+        return result.toString();
+
 
     }
 
@@ -215,6 +263,71 @@ public class CANMessageUtil {
         return result.toString();
     }
 
+    /**
+     * @Author : liyuze
+     * @Time : 17/10/24 下午1:38
+     * @Description : 将二进制字符串转换为十六进制
+     * */
+    public static String parseBinaryToHex(String data){
+        StringBuilder result = new StringBuilder();
+        int count = data.length() / 4;
+        for(int i = 0;i < count;i++){
+            String temp = data.substring(i*4,i*4+4);
+            switch (temp){
+                case "0000":
+                    result.append("0");
+                    break;
+                case "0001":
+                    result.append("1");
+                    break;
+                case "0010":
+                    result.append("2");
+                    break;
+                case "0011":
+                    result.append("3");
+                    break;
+                case "0100":
+                    result.append("4");
+                    break;
+                case "0101":
+                    result.append("5");
+                    break;
+                case "0110":
+                    result.append("6");
+                    break;
+                case "0111":
+                    result.append("7");
+                    break;
+                case "1000":
+                    result.append("8");
+                    break;
+                case "1001":
+                    result.append("9");
+                    break;
+                case "1010":
+                    result.append("A");
+                    break;
+                case "1011":
+                    result.append("B");
+                    break;
+                case "1100":
+                    result.append("C");
+                    break;
+                case "1101":
+                    result.append("D");
+                    break;
+                case "1110":
+                    result.append("E");
+                    break;
+                case "1111":
+                    result.append("F");
+                    break;
+            }
+        }
+        return result.toString();
+
+    }
+
     public static int getId(String msg) {
         if (msg.charAt(0) == 't') {
             return Integer.parseInt(msg.substring(1, 4), 16);
@@ -228,12 +341,14 @@ public class CANMessageUtil {
 
     public static void main(String[] args) {
 //        signal s1 = new signal("a",23,12,0,1.0,0,1.0,1.0,"a");
-        signal s2 = new signal("b",16,12,1,1.0,0,1.0,1.0,"b");
+//        signal s2 = new signal("b",16,12,1,1.0,0,1.0,1.0,"b");
 //        System.out.println(getValue(s1,parseHexToBinary("0000010800000000")));
-        System.out.println(getValue(s2,parseHexToBinary("0000010800000000")));
+//        System.out.println(getValue(s2,parseHexToBinary("0000010800000000")));
 //        System.out.println(getValue(s1,parseHexToBinary("0000801000000000")));
 //        System.out.println(getValue(s2,parseHexToBinary("0000801000000000")));
-
+//        System.out.println(Integer.toBinaryString(255));
+//        System.out.println(Integer.toHexString(255).toUpperCase());
+//        System.out.println(parseBinaryToHex("0010110011110001"));
 
 //        signal s1 = new signal("CDU_HVACOffButtonSt",0,1,0,1.0,0.0,0.0,1.0,"");
 //        signal s2 = new signal("CDU_HVACOffButtonStVD",1,1,0,1.0,0.0,0.0,1.0,"");
@@ -325,49 +440,73 @@ public class CANMessageUtil {
 //        System.out.println(getValue(s21,parseHexToBinary("F92B31EA026508C2")));
 
 
-//        signal s1 = new signal("HVAC_AirCompressorSt",2,3,0,1.0,0.0,0.0,1.0,"");
-//        signal s2 = new signal("HVAC_CorrectedExterTempVD",3,1,0,1.0,0.0,0.0,1.0,"");
-//        signal s3 = new signal("HVAC_RawExterTempVD",4,1,0,1.0,0.0,0.0,1.0,"");
-//        signal s4 = new signal("HVAC_EngIdleStopProhibitReq",5,1,0,1.0,0.0,0.0,1.0,"");
-//        signal s5 = new signal("HVAC_ACSt",6,1,0,1.0,0.0,0.0,1.0,"");
-//        signal s6 = new signal("HVAC_ACmaxSt",7,1,0,1.0,0.0,0.0,1.0,"");
-//        signal s7 = new signal("HVAC_CorrectedExterTemp",15,8,0,0.5,-40.0,-40.0,87.5,"°C");
-//        signal s8 = new signal("HVAC_RawExterTemp",23,8,0,0.5,-40.0,-40.0,87.5,"°C");
-//        signal s9 = new signal("HVAC_TempSelect",28,5,0,0.5,18.0,18.0,32.0,"°C");
-//        signal s10 = new signal("HVAC_DualSt",29,1,0,1.0,0.0,0.0,1.0,"");
-//        signal s11 = new signal("HVAC_AutoSt",30,1,0,1.0,0.0,0.0,1.0,"");
-//        signal s12 = new signal("HVAC_Type",31,1,0,1.0,0.0,0.0,1.0,"");
-//        signal s13 = new signal("HVAC_WindExitMode",34,3,0,1.0,0.0,0.0,7.0,"");
-//        signal s14 = new signal("HVAC_SpdFanReq",36,2,0,1.0,0.0,0.0,1.0,"");
-//        signal s15 = new signal("HVAC_TelematicsSt",42,3,0,1.0,0.0,0.0,7.0,"");
-//        signal s16 = new signal("HVAC_AirCirculationSt",46,2,0,1.0,0.0,0.0,3.0,"");
-//        signal s17 = new signal("HVAC_PopUpDisplayReq",47,1,0,1.0,0.0,0.0,1.0,"");
-//        signal s18 = new signal("HVAC_DriverTempSelect",53,5,0,0.5,18.0,18.0,32.0,"°C");
-//        signal s19 = new signal("HVAC_IonMode",55,2,0,1.0,0.0,0.0,3.0,"");
-//        signal s20 = new signal("HVAC_WindExitSpd",59,4,0,1.0,0.0,0.0,15.0,"");
-//        signal s21 = new signal("HVAC_PsnTempSelect",48,5,0,0.5,18.0,18.0,32.0,"");
-//        System.out.println(getValue(s1,parseHexToBinary("80478C2F05A1D29A")));
-//        System.out.println(getValue(s2,parseHexToBinary("80478C2F05A1D29A")));
-//        System.out.println(getValue(s3,parseHexToBinary("80478C2F05A1D29A")));
-//        System.out.println(getValue(s4,parseHexToBinary("80478C2F05A1D29A")));
-//        System.out.println(getValue(s5,parseHexToBinary("80478C2F05A1D29A")));
-//        System.out.println(getValue(s6,parseHexToBinary("80478C2F05A1D29A")));
-//        System.out.println(getValue(s7,parseHexToBinary("80478C2F05A1D29A")));
-//        System.out.println(getValue(s8,parseHexToBinary("80478C2F05A1D29A")));
-//        System.out.println(getValue(s9,parseHexToBinary("80478C2F05A1D29A")));
-//        System.out.println(getValue(s10,parseHexToBinary("80478C2F05A1D29A")));
-//        System.out.println(getValue(s11,parseHexToBinary("80478C2F05A1D29A")));
-//        System.out.println(getValue(s12,parseHexToBinary("80478C2F05A1D29A")));
-//        System.out.println(getValue(s13,parseHexToBinary("80478C2F05A1D29A")));
-//        System.out.println(getValue(s14,parseHexToBinary("80478C2F05A1D29A")));
-//        System.out.println(getValue(s15,parseHexToBinary("80478C2F05A1D29A")));
-//        System.out.println(getValue(s16,parseHexToBinary("80478C2F05A1D29A")));
-//        System.out.println(getValue(s17,parseHexToBinary("80478C2F05A1D29A")));
-//        System.out.println(getValue(s18,parseHexToBinary("80478C2F05A1D29A")));
-//        System.out.println(getValue(s19,parseHexToBinary("80478C2F05A1D29A")));
-//        System.out.println(getValue(s20,parseHexToBinary("80478C2F05A1D29A")));
-//        System.out.println(getValue(s21,parseHexToBinary("80478C2F05A1D29A")));
+        signal s1 = new signal("HVAC_AirCompressorSt",2,3,0,1.0,0.0,0.0,1.0,"");
+        signal s2 = new signal("HVAC_CorrectedExterTempVD",3,1,0,1.0,0.0,0.0,1.0,"");
+        signal s3 = new signal("HVAC_RawExterTempVD",4,1,0,1.0,0.0,0.0,1.0,"");
+        signal s4 = new signal("HVAC_EngIdleStopProhibitReq",5,1,0,1.0,0.0,0.0,1.0,"");
+        signal s5 = new signal("HVAC_ACSt",6,1,0,1.0,0.0,0.0,1.0,"");
+        signal s6 = new signal("HVAC_ACmaxSt",7,1,0,1.0,0.0,0.0,1.0,"");
+        signal s7 = new signal("HVAC_CorrectedExterTemp",15,8,0,0.5,-40.0,-40.0,87.5,"°C");
+        signal s8 = new signal("HVAC_RawExterTemp",23,8,0,0.5,-40.0,-40.0,87.5,"°C");
+        signal s9 = new signal("HVAC_TempSelect",28,5,0,0.5,18.0,18.0,32.0,"°C");
+        signal s10 = new signal("HVAC_DualSt",29,1,0,1.0,0.0,0.0,1.0,"");
+        signal s11 = new signal("HVAC_AutoSt",30,1,0,1.0,0.0,0.0,1.0,"");
+        signal s12 = new signal("HVAC_Type",31,1,0,1.0,0.0,0.0,1.0,"");
+        signal s13 = new signal("HVAC_WindExitMode",34,3,0,1.0,0.0,0.0,7.0,"");
+        signal s14 = new signal("HVAC_SpdFanReq",36,2,0,1.0,0.0,0.0,1.0,"");
+        signal s15 = new signal("HVAC_TelematicsSt",42,3,0,1.0,0.0,0.0,7.0,"");
+        signal s16 = new signal("HVAC_AirCirculationSt",46,2,0,1.0,0.0,0.0,3.0,"");
+        signal s17 = new signal("HVAC_PopUpDisplayReq",47,1,0,1.0,0.0,0.0,1.0,"");
+        signal s18 = new signal("HVAC_DriverTempSelect",53,5,0,0.5,18.0,18.0,32.0,"°C");
+        signal s19 = new signal("HVAC_IonMode",55,2,0,1.0,0.0,0.0,3.0,"");
+        signal s20 = new signal("HVAC_WindExitSpd",59,4,0,1.0,0.0,0.0,15.0,"");
+        signal s21 = new signal("HVAC_PsnTempSelect",48,5,0,0.5,18.0,18.0,32.0,"");
+        System.out.println(getValue(s1,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s2,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s3,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s4,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s5,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s6,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s7,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s8,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s9,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s10,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s11,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s12,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s13,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s14,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s15,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s16,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s17,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s18,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s19,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s20,parseHexToBinary("80478C2F05A1D29A")));
+        System.out.println(getValue(s21,parseHexToBinary("80478C2F05A1D29A")));
 
+        Map<String, Double> data = new HashMap<>();
+        data.put("HVAC_AirCompressorSt", (double) 0);
+        data.put("HVAC_CorrectedExterTempVD", (double) 0);
+        data.put("HVAC_RawExterTempVD", (double) 0);
+        data.put("HVAC_EngIdleStopProhibitReq", (double) 0);
+        data.put("HVAC_ACSt", (double) 0);
+        data.put("HVAC_ACmaxSt", (double) 1);
+        data.put("HVAC_CorrectedExterTemp",-4.5);
+        data.put("HVAC_RawExterTemp", (double) 30);
+        data.put("HVAC_TempSelect",25.5);
+        data.put("HVAC_DualSt", (double) 1);
+        data.put("HVAC_AutoSt", (double) 0);
+        data.put("HVAC_Type", (double) 0);
+        data.put("HVAC_WindExitMode", (double) 5);
+        data.put("HVAC_SpdFanReq", (double) 0);
+        data.put("HVAC_TelematicsSt", (double) 1);
+        data.put("HVAC_AirCirculationSt", (double) 1);
+        data.put("HVAC_PopUpDisplayReq", (double) 1);
+        data.put("HVAC_DriverTempSelect",22.5);
+        data.put("HVAC_IonMode", (double) 3);
+        data.put("HVAC_WindExitSpd", (double) 10);
+        data.put("HVAC_PsnTempSelect",22.5);
+
+        MessageStringify("800",data);
 
     }
 
