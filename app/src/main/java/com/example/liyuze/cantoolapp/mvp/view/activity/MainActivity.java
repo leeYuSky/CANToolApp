@@ -412,12 +412,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.add_item:
+            case R.id.bluetooth_item:
                 Intent serverIntent = new Intent(MainActivity.this, DeviceListActivity.class);
                 startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
                 break;
+            case R.id.add_item:
+//                Intent serverIntent = new Intent(MainActivity.this, DeviceListActivity.class);
+//                startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
+                sendMessage("O1");
+                break;
             case R.id.remove_item:
-                Toast.makeText(this,"You clicked remove",Toast.LENGTH_LONG).show();
+//                Toast.makeText(this,"You clicked remove",Toast.LENGTH_LONG).show();
+                sendMessage("C");
                 break;
             default:
         }
@@ -559,7 +565,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                         DBUtil.insertSignal(readMessage);
                     }else{
-                        readMessage = "未知输入数据";
+                        readMessage = "未知输入数据" + readMessage;
                         showToast(readMessage);
                     }
 
