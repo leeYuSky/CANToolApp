@@ -18,7 +18,7 @@
         android:paddingBottom="3dp"
         android:text="@string/title_paired_devices"
         android:textColor="#fff"
-
+ 
         />
 
     <ListView
