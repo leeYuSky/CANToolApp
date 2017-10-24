@@ -1,0 +1,97 @@
+package com.ss.cs.action;
+
+import com.ss.cs.action.auth.Passport;
+import com.ss.cs.model.SelectCourseEntity;
+import com.ss.cs.model.UserEntity;
+import com.ss.cs.service.CourseService;
+import com.ss.cs.service.SelectCourseService;
+import com.ss.cs.service.ValueService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by LiYm on 2016/2/11.
+ */
+@Passport
+@Controller
+@RequestMapping("center")
+public class CenterAction {
+
+    @Autowired
+    CourseService courseService;
+    @Autowired
+    SelectCourseService selectCourseService;
+    @Autowired
+    ValueService valueService;
+
+    @RequestMapping("select")
+    public String selectPage(HttpSession session, ModelMap modelMap) {
+        UserEntity user = (UserEntity) session.getAttribute("user");
+        List<SelectCourseEntity> scs = selectCourseService.listMyCourses(user.getId()).getData();
+        Integer left = new Integer(valueService.getMaxCourse() - scs.size());
+        modelMap.addAttribute("left", left);
+        modelMap.addAttribute("selectCourses", scs);
+        modelMap.addAttribute("list", courseService.listCourseEntity().getData());
+        return "center/select";
+    }
+
+    @RequestMapping("homework/list")
+    public String homeworkPage(HttpSession session, ModelMap modelMap) {
+        UserEntity user = (UserEntity) session.getAttribute("user");
+        modelMap.addAttribute("list", courseService.listHomeworkByStudent(user.getId(), 0, 10).getData());
+        return "center/homework";
+    }
+
+    @RequestMapping("discussion/list")
+    public String discussionListPage(HttpSession session, ModelMap modelMap) {
+        UserEntity user = (UserEntity) session.getAttribute("user");
+        modelMap.addAttribute("list", courseService.listTopicByStudent(user.getId(), 0, 10).getData());
+        modelMap.addAttribute("selectCourses", selectCourseService.listMyCourses(user.getId()).getData());
+        return "center/discussionlist";
+    }
+
+    @RequestMapping("discussion/topic/{id}")
+    public String discussionPage(@PathVariable String id, ModelMap modelMap) {
+        modelMap.addAttribute("topic", courseService.loadDiscussion(id));
+        modelMap.addAttribute("list", courseService.listByTopic(id, 0, 10).getData());
+        return "center/discussion";
+    }
+
+    @RequestMapping("score")
+    public String scorePage(HttpSession session, ModelMap modelMap) {
+        UserEntity user = (UserEntity) session.getAttribute("user");
+
+        List<SelectCourseEntity> selectCourses = selectCourseService.listMyCourses(user.getId()).getData();
+        modelMap.addAttribute("selectCourses", selectCourses);
+
+        List<char[]> scores = new ArrayList<>();
+        for (SelectCourseEntity sc : selectCourses) {
+            if (sc.getScore() == null) {
+                scores.add(null);
+            } else {
+                scores.add(new Integer(sc.getScore().intValue()).toString().toCharArray());
+            }
+        }
+        modelMap.addAttribute("scores", scores);
+
+        return "center/score";
+    }
+
+    @RequestMapping("score/{id}/detail")
+    public String scoreDetailPage(@PathVariable String id, ModelMap modelMap) {
+        SelectCourseEntity sc = selectCourseService.load(id);
+        modelMap.addAttribute("sc", sc);
+        Integer i = new Integer(sc.getScore().intValue());
+        modelMap.addAttribute("score", i.toString().toCharArray());
+        return "center/scoredetail";
+    }
+
+}

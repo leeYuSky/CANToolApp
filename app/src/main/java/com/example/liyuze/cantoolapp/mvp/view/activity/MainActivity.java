@@ -64,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "MainActivity";
 
+    public static MainActivity mainActivity;
+
     public static final int REQUEST_ENABLE_BT = 1; // 请求打开蓝牙
 
     public static final int REQUEST_CONNECT_DEVICE = 2;
@@ -101,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.e(TAG,"-----------------------------onCreate------------------------------MainActivity");
-
+        mainActivity = this;
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setSubtitle("No device connected");
         setSupportActionBar(toolbar);
@@ -548,12 +550,16 @@ public class MainActivity extends AppCompatActivity {
                     {
                         readMessage = "Error";
                         showToast(readMessage);
-                    }else if(readMessage.length() == 22 || readMessage.length() == 27){
+                    }else if(readMessage.length() == 22 || readMessage.length() == 26 || readMessage.length() == 27
+                            || readMessage.length() == 31){
                         Log.e(TAG, "-----------当前message为：" + readMessage + "---------------------");
                         mConversationArrayAdapter.add(mConnectedDeviceName + ":  " + readMessage);
+                        if(readMessage.length() == 26 || readMessage.length() == 31){
+                            readMessage = readMessage.substring(0,readMessage.length()-4);
+                        }
                         DBUtil.insertSignal(readMessage);
                     }else{
-                        readMessage = "未知错误";
+                        readMessage = "未知输入数据";
                         showToast(readMessage);
                     }
 
@@ -589,7 +595,7 @@ public class MainActivity extends AppCompatActivity {
 
             // Reset out string buffer to zero and clear the edit text field
             mOutStringBuffer.setLength(0);
-            mOutEditText.setText(mOutStringBuffer);
+            mOutEditText.setText("");
         }
     }
 
