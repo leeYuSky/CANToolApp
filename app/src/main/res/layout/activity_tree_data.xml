@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.liyuze.cantoolapp.mvp.view.activity.TreeDataActivity">
+
+    <TextView
+        android:id="@+id/messageName_lee"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:text="messageName"
+        android:gravity="center"
+        android:textSize="18dp"/>
+
+    <TextView
+        android:id="@+id/messageTime_lee"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:text="time"
+        android:gravity="center"/>
+
+    <ListView
+        android:id="@+id/current_signal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

@@ -87,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
     private String mConnectedDeviceName = null;
     private StringBuffer mOutStringBuffer;
 
+    public List<String> ArrayAdapterUUID;
+
 
 
     Toolbar toolbar;
@@ -526,6 +528,9 @@ public class MainActivity extends AppCompatActivity {
                         case BluetoothPresenter.STATE_CONNECTED:
                             setStatus(getString(R.string.title_connected_to, mConnectedDeviceName));
                             mConversationArrayAdapter.clear();
+
+                            ArrayAdapterUUID.clear();
+
                             break;
                         case BluetoothPresenter.STATE_CONNECTING:
                             setStatus(R.string.title_connecting);
@@ -563,7 +568,11 @@ public class MainActivity extends AppCompatActivity {
                         if(readMessage.length() == 26 || readMessage.length() == 31){
                             readMessage = readMessage.substring(0,readMessage.length()-4);
                         }
-                        DBUtil.insertSignal(readMessage);
+
+                        String messageUUID = UUID.randomUUID().toString();
+                        DBUtil.insertSignal(readMessage,messageUUID);
+                        ArrayAdapterUUID.add(messageUUID);
+
                     }else{
                         readMessage = "未知输入数据" + readMessage;
                         showToast(readMessage);

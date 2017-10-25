@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,6 +30,10 @@ import com.example.liyuze.cantoolapp.mvp.constants.Constants;
 import com.example.liyuze.cantoolapp.mvp.presenter.BluetoothPresenter;
 import com.example.liyuze.cantoolapp.mvp.view.activity.DeviceListActivity;
 import com.example.liyuze.cantoolapp.mvp.view.activity.MainActivity;
+import com.example.liyuze.cantoolapp.mvp.view.activity.TreeDataActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -53,6 +58,8 @@ public class HomeFragment extends Fragment {
     public ArrayAdapter<String> mConversationArrayAdapter;
     private String mConnectedDeviceName = null;
     private StringBuffer mOutStringBuffer;
+
+    public List<String> ArrayAdapterUUID;
 
 
     // Layout Views
@@ -114,9 +121,14 @@ public class HomeFragment extends Fragment {
         MainActivity activity = (MainActivity) getActivity();
         if(activity.mConversationArrayAdapter != null){
             mConversationArrayAdapter = activity.mConversationArrayAdapter;
+
+            ArrayAdapterUUID = activity.ArrayAdapterUUID;
         }else{
             mConversationArrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1);
             activity.mConversationArrayAdapter = mConversationArrayAdapter;
+
+            ArrayAdapterUUID = new ArrayList<>();
+            activity.ArrayAdapterUUID = ArrayAdapterUUID;
         }
 
 //        mConversationArrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1);
@@ -137,6 +149,18 @@ public class HomeFragment extends Fragment {
                 // Send a message using content of the edit text widget
                 String message = mOutEditText.getText().toString();
                 ((MainActivity)getActivity()).sendMessage(message);
+            }
+        });
+
+        mConversationView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String msg = mConversationArrayAdapter.getItem(position);
+                String uuid = ArrayAdapterUUID.get(position);
+                Intent intent = new Intent(getActivity(),TreeDataActivity.class);
+                intent.putExtra("uuid",uuid);
+                intent.putExtra("msg",msg);
+                startActivity(intent);
             }
         });
 

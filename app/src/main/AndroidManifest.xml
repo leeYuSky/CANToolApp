@@ -36,8 +36,13 @@
             android:theme="@style/Theme.AppCompat.Light.Dialog" />
         <activity
             android:name=".mvp.view.activity.UploadDataActivity"
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
+        <activity
+            android:name=".mvp.view.activity.TreeDataActivity"
             android:theme="@style/Theme.AppCompat.Light.Dialog"/>
         <uses-library android:name="android.test.runner" />
+
+
     </application>
 
 </manifest>
