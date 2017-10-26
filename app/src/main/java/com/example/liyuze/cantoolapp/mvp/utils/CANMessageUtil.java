@@ -73,7 +73,38 @@ public class CANMessageUtil {
                     String valueString = Integer.toBinaryString(value);
                     sb.replace(start + length - valueString.length(), start + length, valueString);
                 }else{
-                    // TODO
+                    double a = s.getA();
+                    double offset = s.getOffset();
+                    double realvalue = data.get(signals.get(i).getName());
+                    int value = (int) ((realvalue - offset) / a);
+                    String valueString = Integer.toBinaryString(value);
+
+                    int start = s.getStart();
+                    int end = start + s.getLength() - 1;
+                    int indexStart = start / 8;
+                    int indexEnd = end / 8;
+                    int cha = indexEnd - indexStart;
+
+//                    if(cha == 0){
+//                        int tempLength = getStart(start)+1 - getStart(end);
+//                        sb.replace(getStart(end) +tempLength -valueString.length(),getStart(start)+1,valueString);
+//                    }else if (cha == 1){
+//                        sb.replace(indexStart*8,getStart(start)+1,valueString.substring(getStart(start)+1-indexStart*8));
+//                        sb.replace(getStart(end),indexEnd*8+8,valueString.substring(0,indexEnd*8+8 - getStart(end)));
+//
+//                    }else{
+//                        sb.replace(getStart(end),indexEnd*8+8,valueString.substring(0,indexEnd*8+8 - getStart(end)));
+//                        for(int j = 1;j < cha;j++){
+//                            sb.replace((indexEnd-i)*8,(indexEnd-i)*8+8,)
+//                            sb.append(binaryData.substring((indexEnd-i)*8,(indexEnd-i)*8+8));
+//                        }
+//                        sb.replace(indexStart*8,getStart(start)+1,valueString.substring(getStart(start)+1-indexStart*8));
+//                    }
+                    int k = 0;
+                    for(int j = valueString.length() - 1;j >=0;j--){
+                        sb.replace(getStart(start+k),getStart(start+k)+1, String.valueOf(valueString.charAt(j)));
+                        k++;
+                    }
                 }
 
             }
@@ -145,21 +176,6 @@ public class CANMessageUtil {
         if (signal.getType() == 0) {
             // 数据按Motorola的bit顺序排列
 
-//            int row = signal.getLength() / 8;
-//            int remaining = signal.getLength() % 8;
-//            StringBuilder sb = new StringBuilder();
-//            int currentRow = signal.getStart() / 8;
-//            for(int i = 0;i < row;i++){
-//                sb.append(new StringBuilder(binaryData.substring(currentRow*8,currentRow*8+8)).reverse().toString());
-//                currentRow++;
-//            }
-//
-//            sb.append(new StringBuilder(binaryData.substring(currentRow*8 + 8 - remaining,currentRow*8 + 8)).reverse());
-//            System.out.println("类型为0："+sb.toString());
-//            int intValue = Integer.parseInt(sb.toString(),2);
-//            double realValue = signal.getA() * intValue + signal.getOffset();
-//            return realValue;
-
             int realStart = getStart(signal.getStart());
 
             int intValue = Integer.parseInt(binaryData.substring(realStart, realStart + signal.getLength()), 2);
@@ -171,33 +187,37 @@ public class CANMessageUtil {
         } else if (signal.getType() == 1) {
             // 数据按Intel的bit顺序排列
 
-//            System.out.println("类型为1："+new StringBuilder(binaryData.substring(signal.getStart(),signal.getStart()+signal.getLength())).reverse().toString());
-//            int intValue = Integer.parseInt(
-//                    new StringBuilder(binaryData.substring(signal.getStart(),signal.getStart()+signal.getLength())).reverse().toString(),2);
-//            double realValue = signal.getA() * intValue + signal.getOffset();
-//            return realValue;
-
-            int realStart = getStart(signal.getStart());
-            int row = signal.getLength() / 8;
-            int remaining = signal.getLength() % 8;
-            int currentRow = signal.getStart() / 8 + row;
+            int start = signal.getStart();
+            int end = start + signal.getLength() - 1;
+            int indexStart = start / 8;
+            int indexEnd = end / 8;
+            int cha = indexEnd - indexStart;
             StringBuilder sb = new StringBuilder();
-            sb.append(binaryData.substring(currentRow * 8 + (8 - remaining), currentRow * 8 + 8));
-            for (int i = 0; i < row; i++) {
-                currentRow--;
-                sb.append(binaryData.substring(currentRow * 8, currentRow * 8 + 8));
+            if(cha == 0){
+                sb.append(binaryData.substring(getStart(end),getStart(start)+1));
+            }else if (cha == 1){
+                sb.append(binaryData.substring(getStart(end),indexEnd*8+8));
+                sb.append(binaryData.substring(indexStart*8,getStart(start)+1));
+            }else{
+                sb.append(binaryData.substring(getStart(end),indexEnd*8+8));
+                for(int i = 1;i < cha;i++){
+                    sb.append(binaryData.substring((indexEnd-i)*8,(indexEnd-i)*8+8));
+                }
+                sb.append(binaryData.substring(indexStart*8,getStart(start)+1));
             }
+
+
             int intValue = Integer.parseInt(sb.toString(), 2);
             double realValue = signal.getA() * intValue + signal.getOffset();
             return realValue;
-
 
         }
         return result;
     }
 
     public static int getStart(int start) {
-        return (start / 8) * 8 + ((start / 8 + 1) * 8 - 1 - start);
+        int result = (start / 8) * 8 + ((start / 8 + 1) * 8 - 1 - start);
+        return result;
     }
 
 
@@ -343,6 +363,23 @@ public class CANMessageUtil {
     }
 
 
+    public static boolean isHaveSpeed(String msg){
+        boolean have = false;
+        if(msg.charAt(0) == 't'){
+            int count = Integer.parseInt(msg.substring(4,5));
+            if(count * 2 + 10 == 26){
+                have = true;
+            }
+        }else{
+            int count = Integer.parseInt(msg.substring(9,10));
+            if(count * 2 + 15 == 31){
+                have = true;
+            }
+        }
+        return have;
+    }
+
+
     public static void main(String[] args) {
 //        signal s1 = new signal("a",23,12,0,1.0,0,1.0,1.0,"a");
 //        signal s2 = new signal("b",16,12,1,1.0,0,1.0,1.0,"b");
@@ -444,74 +481,146 @@ public class CANMessageUtil {
 //        System.out.println(getValue(s21,parseHexToBinary("F92B31EA026508C2")));
 
 
-        signal s1 = new signal("HVAC_AirCompressorSt",2,3,0,1.0,0.0,0.0,1.0,"");
-        signal s2 = new signal("HVAC_CorrectedExterTempVD",3,1,0,1.0,0.0,0.0,1.0,"");
-        signal s3 = new signal("HVAC_RawExterTempVD",4,1,0,1.0,0.0,0.0,1.0,"");
-        signal s4 = new signal("HVAC_EngIdleStopProhibitReq",5,1,0,1.0,0.0,0.0,1.0,"");
-        signal s5 = new signal("HVAC_ACSt",6,1,0,1.0,0.0,0.0,1.0,"");
-        signal s6 = new signal("HVAC_ACmaxSt",7,1,0,1.0,0.0,0.0,1.0,"");
-        signal s7 = new signal("HVAC_CorrectedExterTemp",15,8,0,0.5,-40.0,-40.0,87.5,"°C");
-        signal s8 = new signal("HVAC_RawExterTemp",23,8,0,0.5,-40.0,-40.0,87.5,"°C");
-        signal s9 = new signal("HVAC_TempSelect",28,5,0,0.5,18.0,18.0,32.0,"°C");
-        signal s10 = new signal("HVAC_DualSt",29,1,0,1.0,0.0,0.0,1.0,"");
-        signal s11 = new signal("HVAC_AutoSt",30,1,0,1.0,0.0,0.0,1.0,"");
-        signal s12 = new signal("HVAC_Type",31,1,0,1.0,0.0,0.0,1.0,"");
-        signal s13 = new signal("HVAC_WindExitMode",34,3,0,1.0,0.0,0.0,7.0,"");
-        signal s14 = new signal("HVAC_SpdFanReq",36,2,0,1.0,0.0,0.0,1.0,"");
-        signal s15 = new signal("HVAC_TelematicsSt",42,3,0,1.0,0.0,0.0,7.0,"");
-        signal s16 = new signal("HVAC_AirCirculationSt",46,2,0,1.0,0.0,0.0,3.0,"");
-        signal s17 = new signal("HVAC_PopUpDisplayReq",47,1,0,1.0,0.0,0.0,1.0,"");
-        signal s18 = new signal("HVAC_DriverTempSelect",53,5,0,0.5,18.0,18.0,32.0,"°C");
-        signal s19 = new signal("HVAC_IonMode",55,2,0,1.0,0.0,0.0,3.0,"");
-        signal s20 = new signal("HVAC_WindExitSpd",59,4,0,1.0,0.0,0.0,15.0,"");
-        signal s21 = new signal("HVAC_PsnTempSelect",48,5,0,0.5,18.0,18.0,32.0,"");
-        System.out.println(getValue(s1,parseHexToBinary("80478C2F05A1D29A")));
-        System.out.println(getValue(s2,parseHexToBinary("80478C2F05A1D29A")));
-        System.out.println(getValue(s3,parseHexToBinary("80478C2F05A1D29A")));
-        System.out.println(getValue(s4,parseHexToBinary("80478C2F05A1D29A")));
-        System.out.println(getValue(s5,parseHexToBinary("80478C2F05A1D29A")));
-        System.out.println(getValue(s6,parseHexToBinary("80478C2F05A1D29A")));
-        System.out.println(getValue(s7,parseHexToBinary("80478C2F05A1D29A")));
-        System.out.println(getValue(s8,parseHexToBinary("80478C2F05A1D29A")));
-        System.out.println(getValue(s9,parseHexToBinary("80478C2F05A1D29A")));
-        System.out.println(getValue(s10,parseHexToBinary("80478C2F05A1D29A")));
-        System.out.println(getValue(s11,parseHexToBinary("80478C2F05A1D29A")));
-        System.out.println(getValue(s12,parseHexToBinary("80478C2F05A1D29A")));
-        System.out.println(getValue(s13,parseHexToBinary("80478C2F05A1D29A")));
-        System.out.println(getValue(s14,parseHexToBinary("80478C2F05A1D29A")));
-        System.out.println(getValue(s15,parseHexToBinary("80478C2F05A1D29A")));
-        System.out.println(getValue(s16,parseHexToBinary("80478C2F05A1D29A")));
-        System.out.println(getValue(s17,parseHexToBinary("80478C2F05A1D29A")));
-        System.out.println(getValue(s18,parseHexToBinary("80478C2F05A1D29A")));
-        System.out.println(getValue(s19,parseHexToBinary("80478C2F05A1D29A")));
-        System.out.println(getValue(s20,parseHexToBinary("80478C2F05A1D29A")));
-        System.out.println(getValue(s21,parseHexToBinary("80478C2F05A1D29A")));
+//        signal s1 = new signal("HVAC_AirCompressorSt",2,3,0,1.0,0.0,0.0,1.0,"");
+//        signal s2 = new signal("HVAC_CorrectedExterTempVD",3,1,0,1.0,0.0,0.0,1.0,"");
+//        signal s3 = new signal("HVAC_RawExterTempVD",4,1,0,1.0,0.0,0.0,1.0,"");
+//        signal s4 = new signal("HVAC_EngIdleStopProhibitReq",5,1,0,1.0,0.0,0.0,1.0,"");
+//        signal s5 = new signal("HVAC_ACSt",6,1,0,1.0,0.0,0.0,1.0,"");
+//        signal s6 = new signal("HVAC_ACmaxSt",7,1,0,1.0,0.0,0.0,1.0,"");
+//        signal s7 = new signal("HVAC_CorrectedExterTemp",15,8,0,0.5,-40.0,-40.0,87.5,"°C");
+//        signal s8 = new signal("HVAC_RawExterTemp",23,8,0,0.5,-40.0,-40.0,87.5,"°C");
+//        signal s9 = new signal("HVAC_TempSelect",28,5,0,0.5,18.0,18.0,32.0,"°C");
+//        signal s10 = new signal("HVAC_DualSt",29,1,0,1.0,0.0,0.0,1.0,"");
+//        signal s11 = new signal("HVAC_AutoSt",30,1,0,1.0,0.0,0.0,1.0,"");
+//        signal s12 = new signal("HVAC_Type",31,1,0,1.0,0.0,0.0,1.0,"");
+//        signal s13 = new signal("HVAC_WindExitMode",34,3,0,1.0,0.0,0.0,7.0,"");
+//        signal s14 = new signal("HVAC_SpdFanReq",36,2,0,1.0,0.0,0.0,1.0,"");
+//        signal s15 = new signal("HVAC_TelematicsSt",42,3,0,1.0,0.0,0.0,7.0,"");
+//        signal s16 = new signal("HVAC_AirCirculationSt",46,2,0,1.0,0.0,0.0,3.0,"");
+//        signal s17 = new signal("HVAC_PopUpDisplayReq",47,1,0,1.0,0.0,0.0,1.0,"");
+//        signal s18 = new signal("HVAC_DriverTempSelect",53,5,0,0.5,18.0,18.0,32.0,"°C");
+//        signal s19 = new signal("HVAC_IonMode",55,2,0,1.0,0.0,0.0,3.0,"");
+//        signal s20 = new signal("HVAC_WindExitSpd",59,4,0,1.0,0.0,0.0,15.0,"");
+//        signal s21 = new signal("HVAC_PsnTempSelect",48,5,0,0.5,18.0,18.0,32.0,"");
+//        System.out.println(getValue(s1,parseHexToBinary("80478C2F05A1D29A")));
+//        System.out.println(getValue(s2,parseHexToBinary("80478C2F05A1D29A")));
+//        System.out.println(getValue(s3,parseHexToBinary("80478C2F05A1D29A")));
+//        System.out.println(getValue(s4,parseHexToBinary("80478C2F05A1D29A")));
+//        System.out.println(getValue(s5,parseHexToBinary("80478C2F05A1D29A")));
+//        System.out.println(getValue(s6,parseHexToBinary("80478C2F05A1D29A")));
+//        System.out.println(getValue(s7,parseHexToBinary("80478C2F05A1D29A")));
+//        System.out.println(getValue(s8,parseHexToBinary("80478C2F05A1D29A")));
+//        System.out.println(getValue(s9,parseHexToBinary("80478C2F05A1D29A")));
+//        System.out.println(getValue(s10,parseHexToBinary("80478C2F05A1D29A")));
+//        System.out.println(getValue(s11,parseHexToBinary("80478C2F05A1D29A")));
+//        System.out.println(getValue(s12,parseHexToBinary("80478C2F05A1D29A")));
+//        System.out.println(getValue(s13,parseHexToBinary("80478C2F05A1D29A")));
+//        System.out.println(getValue(s14,parseHexToBinary("80478C2F05A1D29A")));
+//        System.out.println(getValue(s15,parseHexToBinary("80478C2F05A1D29A")));
+//        System.out.println(getValue(s16,parseHexToBinary("80478C2F05A1D29A")));
+//        System.out.println(getValue(s17,parseHexToBinary("80478C2F05A1D29A")));
+//        System.out.println(getValue(s18,parseHexToBinary("80478C2F05A1D29A")));
+//        System.out.println(getValue(s19,parseHexToBinary("80478C2F05A1D29A")));
+//        System.out.println(getValue(s20,parseHexToBinary("80478C2F05A1D29A")));
+//        System.out.println(getValue(s21,parseHexToBinary("80478C2F05A1D29A")));
 
-        Map<String, Double> data = new HashMap<>();
-        data.put("HVAC_AirCompressorSt", (double) 0);
-        data.put("HVAC_CorrectedExterTempVD", (double) 0);
-        data.put("HVAC_RawExterTempVD", (double) 0);
-        data.put("HVAC_EngIdleStopProhibitReq", (double) 0);
-        data.put("HVAC_ACSt", (double) 0);
-        data.put("HVAC_ACmaxSt", (double) 1);
-        data.put("HVAC_CorrectedExterTemp",-4.5);
-        data.put("HVAC_RawExterTemp", (double) 30);
-        data.put("HVAC_TempSelect",25.5);
-        data.put("HVAC_DualSt", (double) 1);
-        data.put("HVAC_AutoSt", (double) 0);
-        data.put("HVAC_Type", (double) 0);
-        data.put("HVAC_WindExitMode", (double) 5);
-        data.put("HVAC_SpdFanReq", (double) 0);
-        data.put("HVAC_TelematicsSt", (double) 1);
-        data.put("HVAC_AirCirculationSt", (double) 1);
-        data.put("HVAC_PopUpDisplayReq", (double) 1);
-        data.put("HVAC_DriverTempSelect",22.5);
-        data.put("HVAC_IonMode", (double) 3);
-        data.put("HVAC_WindExitSpd", (double) 10);
-        data.put("HVAC_PsnTempSelect",22.5);
 
-        MessageStringify("800",data);
+        signal ss1 = new signal("Voltage",48,10,1,0.1,0.0,0.0,102.3,"V");
+        signal ss2 = new signal("CarSpeed",8,16,1,0.5,0.0,0.0,300.0,"");
+        signal ss3 = new signal("WN_Position",0,8,1,1.0,0.0,0.0,100.0,"");
+        signal ss4 = new signal("Light",0,1,1,1.0,0.0,0.0,1.0,"");
+        signal ss5 = new signal("WN_right_up",30,1,1,1.0,0.0,0.0,0.0,"");
+        System.out.println(getValue(ss1,parseHexToBinary("00D9010000005300")));
+        System.out.println(getValue(ss2,parseHexToBinary("00D9010000005300")));
+        System.out.println(getValue(ss3,parseHexToBinary("54")));
+        System.out.println(getValue(ss4,parseHexToBinary("0100")));
+        System.out.println(getValue(ss5,parseHexToBinary("00000000")));
 
+        Map<String, Double> data1 = new HashMap<>();
+        data1.put("Voltage",8.3);
+        test(ss1,8,data1);
+        Map<String, Double> data2 = new HashMap<>();
+        data2.put("CarSpeed",236.5);
+        test(ss2,8,data2);
+        Map<String, Double> data3 = new HashMap<>();
+        data3.put("WN_Position",84.0);
+        test(ss3,1,data3);
+        Map<String, Double> data4 = new HashMap<>();
+        data4.put("Light",1.0);
+        test(ss4,2,data4);
+        Map<String, Double> data5 = new HashMap<>();
+        data5.put("WN_right_up",0.0);
+        test(ss5,4,data5);
+
+
+
+//        Map<String, Double> data = new HashMap<>();
+//        data.put("HVAC_AirCompressorSt", (double) 0);
+//        data.put("HVAC_CorrectedExterTempVD", (double) 0);
+//        data.put("HVAC_RawExterTempVD", (double) 0);
+//        data.put("HVAC_EngIdleStopProhibitReq", (double) 0);
+//        data.put("HVAC_ACSt", (double) 0);
+//        data.put("HVAC_ACmaxSt", (double) 1);
+//        data.put("HVAC_CorrectedExterTemp",-4.5);
+//        data.put("HVAC_RawExterTemp", (double) 30);
+//        data.put("HVAC_TempSelect",25.5);
+//        data.put("HVAC_DualSt", (double) 1);
+//        data.put("HVAC_AutoSt", (double) 0);
+//        data.put("HVAC_Type", (double) 0);
+//        data.put("HVAC_WindExitMode", (double) 5);
+//        data.put("HVAC_SpdFanReq", (double) 0);
+//        data.put("HVAC_TelematicsSt", (double) 1);
+//        data.put("HVAC_AirCirculationSt", (double) 1);
+//        data.put("HVAC_PopUpDisplayReq", (double) 1);
+//        data.put("HVAC_DriverTempSelect",22.5);
+//        data.put("HVAC_IonMode", (double) 3);
+//        data.put("HVAC_WindExitSpd", (double) 10);
+//        data.put("HVAC_PsnTempSelect",22.5);
+//
+//        MessageStringify("800",data);
+
+    }
+
+
+    public static void test(signal s,int count,Map<String, Double> data){
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0;i < count;i++){
+            sb.append("00000000");
+        }
+        double a = s.getA();
+        double offset = s.getOffset();
+        double realvalue = data.get(s.getName());
+        int value = (int) ((realvalue - offset) / a);
+        String valueString = Integer.toBinaryString(value);
+
+        int start = s.getStart();
+        int end = start + s.getLength() - 1;
+        int indexStart = start / 8;
+        int indexEnd = end / 8;
+        int cha = indexEnd - indexStart;
+
+//                    if(cha == 0){
+//                        int tempLength = getStart(start)+1 - getStart(end);
+//                        sb.replace(getStart(end) +tempLength -valueString.length(),getStart(start)+1,valueString);
+//                    }else if (cha == 1){
+//                        sb.replace(indexStart*8,getStart(start)+1,valueString.substring(getStart(start)+1-indexStart*8));
+//                        sb.replace(getStart(end),indexEnd*8+8,valueString.substring(0,indexEnd*8+8 - getStart(end)));
+//
+//                    }else{
+//                        sb.replace(getStart(end),indexEnd*8+8,valueString.substring(0,indexEnd*8+8 - getStart(end)));
+//                        for(int j = 1;j < cha;j++){
+//                            sb.replace((indexEnd-i)*8,(indexEnd-i)*8+8,)
+//                            sb.append(binaryData.substring((indexEnd-i)*8,(indexEnd-i)*8+8));
+//                        }
+//                        sb.replace(indexStart*8,getStart(start)+1,valueString.substring(getStart(start)+1-indexStart*8));
+//                    }
+        int k = 0;
+        for(int j = valueString.length() - 1;j >=0;j--){
+            sb.replace(getStart(start+k),getStart(start+k)+1, String.valueOf(valueString.charAt(j)));
+            k++;
+        }
+
+        System.out.println(parseBinaryToHex(sb.toString()));
     }
 
 }

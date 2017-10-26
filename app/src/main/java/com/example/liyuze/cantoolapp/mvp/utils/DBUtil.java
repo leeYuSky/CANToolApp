@@ -19,25 +19,26 @@ public class DBUtil {
 
     public static final String TAG = DBUtil.class.toString();
 
-    public static void insertSignal(String msg){
+    public static void insertSignal(String msg,String messageUUID){
         Map<String,Double> result = CANMessageUtil.MessageParse(msg);
         int messageId = CANMessageUtil.getId(msg);
-        String messageUUID = UUID.randomUUID().toString();
+//        String messageUUID = UUID.randomUUID().toString();
+        Date date = new Date();
         for(Map.Entry<String,Double> entry : result.entrySet()){
-            new realSignal(messageUUID,messageId,entry.getKey(),entry.getValue(),new Date()).save();
+            new realSignal(messageUUID,messageId,entry.getKey(),entry.getValue(),date).save();
         }
 
         List<realSignal> realSignals = DataSupport.findAll(realSignal.class);
 
-        for(realSignal signal : realSignals){
-            Log.e(TAG,"{");
-            Log.e(TAG,"   "+ signal.getMessageUUID());
-            Log.e(TAG,"   " + signal.getMessageId());
-            Log.e(TAG,"   " + signal.getSignalName());
-            Log.e(TAG,"   " + signal.getRealValue());
-            Log.e(TAG,"   " + signal.getDate());
-            Log.e(TAG,"}");
-        }
+//        for(realSignal signal : realSignals){
+//            Log.e(TAG,"{");
+//            Log.e(TAG,"   "+ signal.getMessageUUID());
+//            Log.e(TAG,"   " + signal.getMessageId());
+//            Log.e(TAG,"   " + signal.getSignalName());
+//            Log.e(TAG,"   " + signal.getRealValue());
+//            Log.e(TAG,"   " + signal.getDate());
+//            Log.e(TAG,"}");
+//        }
 
     }
 
@@ -46,6 +47,13 @@ public class DBUtil {
                 .where("signalName = ?",signalName)
                 .order("date desc")
                 .limit(count)
+                .find(realSignal.class);
+        return realSignals;
+    }
+
+    public static List<realSignal> getRealSignalByUUID(String uuid){
+        List<realSignal> realSignals = DataSupport
+                .where("messageUUID = ?",uuid)
                 .find(realSignal.class);
         return realSignals;
     }

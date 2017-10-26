@@ -8,7 +8,6 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-library android:name="android.test.runner" />
 
     <application
         android:name="org.litepal.LitePalApplication"
@@ -37,7 +36,13 @@
             android:theme="@style/Theme.AppCompat.Light.Dialog" />
         <activity
             android:name=".mvp.view.activity.UploadDataActivity"
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
+        <activity
+            android:name=".mvp.view.activity.TreeDataActivity"
             android:theme="@style/Theme.AppCompat.Light.Dialog"/>
+        <uses-library android:name="android.test.runner" />
+
+
     </application>
 
 </manifest>
