@@ -81,7 +81,7 @@ public class UploadDataActivity extends AppCompatActivity {
                 }
                 String result = CANMessageUtil.MessageStringify(canmessage.getMessageId(),map);
                 EditText editText = (EditText) findViewById(R.id.speed_edit);
-                StringBuilder speed = new StringBuilder("0001"); //1024
+                StringBuilder speed = new StringBuilder("0000");
                 try{
                     int speedInt = Integer.parseInt(editText.getText().toString());
                     if(speedInt > 0 && speedInt <= 65535) {

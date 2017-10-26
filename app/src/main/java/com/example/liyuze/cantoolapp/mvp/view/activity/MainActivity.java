@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -18,6 +19,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -69,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
     public static final int REQUEST_ENABLE_BT = 1; // 请求打开蓝牙
 
     public static final int REQUEST_CONNECT_DEVICE = 2;
+
+    public int selectSpeedIndex = 0;
 
 
     public BluetoothAdapter mBluetoothAdapter;
@@ -427,6 +431,61 @@ public class MainActivity extends AppCompatActivity {
 //                Toast.makeText(this,"You clicked remove",Toast.LENGTH_LONG).show();
                 sendMessage("C");
                 break;
+            case R.id.version_item:
+                sendMessage("V");
+                break;
+            case R.id.speed_item:
+//                sendMessage("V");
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("Chose");
+                builder.setIcon(R.mipmap.ic_speed);
+
+                final String[] speedList = new String[]{"10Kbit","20Kbit","50Kbit","100Kbit",
+                        "125Kbit","250Kbit","500Kbit","800Kbit","1Mbit"};
+                builder.setSingleChoiceItems(speedList, 0, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        selectSpeedIndex = which;
+                    }
+                });
+                builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (selectSpeedIndex) {
+                            case 0:
+                                sendMessage("S0");
+                                break;
+                            case 1:
+                                sendMessage("S1");
+                                break;
+                            case 2:
+                                sendMessage("S2");
+                                break;
+                            case 3:
+                                sendMessage("S3");
+                                break;
+                            case 4:
+                                sendMessage("S4");
+                                break;
+                            case 5:
+                                sendMessage("S5");
+                                break;
+                            case 6:
+                                sendMessage("S6");
+                                break;
+                            case 7:
+                                sendMessage("S7");
+                                break;
+                            case 8:
+                                sendMessage("S8");
+                                break;
+                        }
+                    }
+                });
+                builder.setNegativeButton("Cancel",null);
+                builder.show();
+                break;
             default:
         }
         return true;
@@ -561,19 +620,27 @@ public class MainActivity extends AppCompatActivity {
                     {
                         readMessage = "Error";
                         showToast(readMessage);
-                    }else if(readMessage.length() == 22 || readMessage.length() == 26 || readMessage.length() == 27
-                            || readMessage.length() == 31){
+                    }else if(readMessage.startsWith("t") || readMessage.startsWith("T")){
                         Log.e(TAG, "-----------当前message为：" + readMessage + "---------------------");
                         mConversationArrayAdapter.add(mConnectedDeviceName + ":  " + readMessage);
-                        if(readMessage.length() == 26 || readMessage.length() == 31){
+
+                        if(CANMessageUtil.isHaveSpeed(readMessage)){
                             readMessage = readMessage.substring(0,readMessage.length()-4);
                         }
-
+                        Log.e(TAG,"我想要的数据" + readMessage);
                         String messageUUID = UUID.randomUUID().toString();
                         DBUtil.insertSignal(readMessage,messageUUID);
                         ArrayAdapterUUID.add(messageUUID);
 
-                    }else{
+                    }else if(readMessage.toUpperCase().startsWith("SV")){
+                        AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).
+                                setTitle("Version").
+                                setMessage(readMessage).
+                                setIcon(R.mipmap.ic_version).
+                                create();
+                        alertDialog.show();
+                    }
+                    else{
                         readMessage = "未知输入数据" + readMessage;
                         showToast(readMessage);
                     }

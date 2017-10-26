@@ -30,15 +30,15 @@ public class DBUtil {
 
         List<realSignal> realSignals = DataSupport.findAll(realSignal.class);
 
-        for(realSignal signal : realSignals){
-            Log.e(TAG,"{");
-            Log.e(TAG,"   "+ signal.getMessageUUID());
-            Log.e(TAG,"   " + signal.getMessageId());
-            Log.e(TAG,"   " + signal.getSignalName());
-            Log.e(TAG,"   " + signal.getRealValue());
-            Log.e(TAG,"   " + signal.getDate());
-            Log.e(TAG,"}");
-        }
+//        for(realSignal signal : realSignals){
+//            Log.e(TAG,"{");
+//            Log.e(TAG,"   "+ signal.getMessageUUID());
+//            Log.e(TAG,"   " + signal.getMessageId());
+//            Log.e(TAG,"   " + signal.getSignalName());
+//            Log.e(TAG,"   " + signal.getRealValue());
+//            Log.e(TAG,"   " + signal.getDate());
+//            Log.e(TAG,"}");
+//        }
 
     }
 

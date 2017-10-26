@@ -116,6 +116,38 @@ public class SignalDataActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.e(TAG,"-----------------------------onPause-------------------------------SignalDataActivity");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.e(TAG,"-----------------------------onStop-------------------------------SignalDataActivity");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.e(TAG,"-----------------------------onDestroy-------------------------------SignalDataActivity");
+        if(timer != null){
+            timer.cancel();
+            timer = null;
+        }
+
+    }
 
     private void myInitLineChar(List<realSignal> list){
 //        List<realSignal> list =  getRealSignal(5,currentSignal.getName());
@@ -402,15 +434,6 @@ public class SignalDataActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
 
     public void setupWindow(){
         WindowManager m = getWindowManager();
