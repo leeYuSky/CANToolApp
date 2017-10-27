@@ -367,12 +367,12 @@ public class CANMessageUtil {
         boolean have = false;
         if(msg.charAt(0) == 't'){
             int count = Integer.parseInt(msg.substring(4,5));
-            if(count * 2 + 10 == 26){
+            if(count * 2 + 10 == msg.length()){
                 have = true;
             }
         }else{
             int count = Integer.parseInt(msg.substring(9,10));
-            if(count * 2 + 15 == 31){
+            if(count * 2 + 15 == msg.length()){
                 have = true;
             }
         }
@@ -524,33 +524,36 @@ public class CANMessageUtil {
 //        System.out.println(getValue(s20,parseHexToBinary("80478C2F05A1D29A")));
 //        System.out.println(getValue(s21,parseHexToBinary("80478C2F05A1D29A")));
 
+        signal sss1 = new signal("ESC_VehSpd",36,13,0,0.05625,0.0,0.0,240.0,"");
+        System.out.println(getValue(sss1,parseHexToBinary("000000002DC30000")));
 
-        signal ss1 = new signal("Voltage",48,10,1,0.1,0.0,0.0,102.3,"V");
-        signal ss2 = new signal("CarSpeed",8,16,1,0.5,0.0,0.0,300.0,"");
-        signal ss3 = new signal("WN_Position",0,8,1,1.0,0.0,0.0,100.0,"");
-        signal ss4 = new signal("Light",0,1,1,1.0,0.0,0.0,1.0,"");
-        signal ss5 = new signal("WN_right_up",30,1,1,1.0,0.0,0.0,0.0,"");
-        System.out.println(getValue(ss1,parseHexToBinary("00D9010000005300")));
-        System.out.println(getValue(ss2,parseHexToBinary("00D9010000005300")));
-        System.out.println(getValue(ss3,parseHexToBinary("54")));
-        System.out.println(getValue(ss4,parseHexToBinary("0100")));
-        System.out.println(getValue(ss5,parseHexToBinary("00000000")));
 
-        Map<String, Double> data1 = new HashMap<>();
-        data1.put("Voltage",8.3);
-        test(ss1,8,data1);
-        Map<String, Double> data2 = new HashMap<>();
-        data2.put("CarSpeed",236.5);
-        test(ss2,8,data2);
-        Map<String, Double> data3 = new HashMap<>();
-        data3.put("WN_Position",84.0);
-        test(ss3,1,data3);
-        Map<String, Double> data4 = new HashMap<>();
-        data4.put("Light",1.0);
-        test(ss4,2,data4);
-        Map<String, Double> data5 = new HashMap<>();
-        data5.put("WN_right_up",0.0);
-        test(ss5,4,data5);
+//        signal ss1 = new signal("Voltage",48,10,1,0.1,0.0,0.0,102.3,"V");
+//        signal ss2 = new signal("CarSpeed",8,16,1,0.5,0.0,0.0,300.0,"");
+//        signal ss3 = new signal("WN_Position",0,8,1,1.0,0.0,0.0,100.0,"");
+//        signal ss4 = new signal("Light",0,1,1,1.0,0.0,0.0,1.0,"");
+//        signal ss5 = new signal("WN_right_up",30,1,1,1.0,0.0,0.0,0.0,"");
+//        System.out.println(getValue(ss1,parseHexToBinary("00D9010000005300")));
+//        System.out.println(getValue(ss2,parseHexToBinary("00D9010000005300")));
+//        System.out.println(getValue(ss3,parseHexToBinary("54")));
+//        System.out.println(getValue(ss4,parseHexToBinary("0100")));
+//        System.out.println(getValue(ss5,parseHexToBinary("00000000")));
+//
+//        Map<String, Double> data1 = new HashMap<>();
+//        data1.put("Voltage",8.3);
+//        test(ss1,8,data1);
+//        Map<String, Double> data2 = new HashMap<>();
+//        data2.put("CarSpeed",236.5);
+//        test(ss2,8,data2);
+//        Map<String, Double> data3 = new HashMap<>();
+//        data3.put("WN_Position",84.0);
+//        test(ss3,1,data3);
+//        Map<String, Double> data4 = new HashMap<>();
+//        data4.put("Light",1.0);
+//        test(ss4,2,data4);
+//        Map<String, Double> data5 = new HashMap<>();
+//        data5.put("WN_right_up",0.0);
+//        test(ss5,4,data5);
 
 
 

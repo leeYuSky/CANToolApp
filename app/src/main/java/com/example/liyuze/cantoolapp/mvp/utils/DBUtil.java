@@ -28,7 +28,7 @@ public class DBUtil {
             new realSignal(messageUUID,messageId,entry.getKey(),entry.getValue(),date).save();
         }
 
-        List<realSignal> realSignals = DataSupport.findAll(realSignal.class);
+//        List<realSignal> realSignals = DataSupport.findAll(realSignal.class);
 
 //        for(realSignal signal : realSignals){
 //            Log.e(TAG,"{");

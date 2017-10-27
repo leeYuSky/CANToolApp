@@ -94,6 +94,7 @@ public class UploadDataActivity extends AppCompatActivity {
                 }
 
                 String messageSend = result + speed.toString().toUpperCase();
+//                String messageSend = result;
                 Log.e(TAG,"------------messageSend-----------------" + messageSend);
 
                 MainActivity.mainActivity.sendMessage(messageSend);

@@ -82,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int ACCESS_LOCATION = 1001;
 
+    StringBuffer sb = new StringBuffer();
+
 
     // Layout Views
     private ListView mConversationView;
@@ -589,6 +591,7 @@ public class MainActivity extends AppCompatActivity {
                             mConversationArrayAdapter.clear();
 
                             ArrayAdapterUUID.clear();
+                            sb = new StringBuffer();
 
                             break;
                         case BluetoothPresenter.STATE_CONNECTING:
@@ -611,6 +614,19 @@ public class MainActivity extends AppCompatActivity {
                     // construct a string from the valid bytes in the buffer
                     String readMessage = new String(readBuf, 0, msg.arg1);
                     char temp = readMessage.charAt(0);
+
+
+                    if((int)temp != 7 && temp != '\r' && readMessage.charAt(readMessage.length()-1) != '\r'){
+                        sb.append(readMessage);
+                        break;
+                    }
+                    if(readMessage.charAt(readMessage.length()-1) == '\r'){
+                        sb.append(readMessage);
+                        readMessage = sb.toString();
+                        sb.setLength(0);
+                    }
+
+
                     if(temp == '\r')
                     {
                         readMessage = "OK";
@@ -632,7 +648,7 @@ public class MainActivity extends AppCompatActivity {
                         DBUtil.insertSignal(readMessage,messageUUID);
                         ArrayAdapterUUID.add(messageUUID);
 
-                    }else if(readMessage.toUpperCase().startsWith("SV")){
+                    }else if(readMessage.toUpperCase().contains("V")){
                         AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).
                                 setTitle("Version").
                                 setMessage(readMessage).

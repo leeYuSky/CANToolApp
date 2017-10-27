@@ -22,7 +22,7 @@ EngineStatus: 101 1 Status 0 2 1 1.0 0.0 0.0 0.0 ""
 EngineDataIEEE: 102 8
 
 EngineData: 100 8 PetrolLevel 24 8 1 1.0 0.0 0.0 255.0 "l"
-EngineData: 100 8 EngPower 48 16 1 0.0 0.0 0.0 150.0 "kW"
+EngineData: 100 8 EngPower 48 16 1 0.01 0.0 0.0 150.0 "kW"
 EngineData: 100 8 EngForce 32 16 1 1.0 0.0 0.0 0.0 "N"
 EngineData: 100 8 IdleRunning 23 1 1 1.0 0.0 0.0 0.0 ""
 EngineData: 100 8 EngTemp 16 7 1 2.0 -50.0 -50.0 150.0 "degC"

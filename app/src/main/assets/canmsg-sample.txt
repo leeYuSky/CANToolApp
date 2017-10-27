@@ -46,7 +46,7 @@ BCM_NM: 1056 8 BCM_NMDataField 31 40 0 1.0 0.0 0.0 1.0 ""
 BCM_BCAN_1: 792 8 BCM_KeySt 1 2 0 1.0 0.0 1.0 3.0 ""
 
 BCM_ESC_2: 837 8 ESC_VehSpdVD 37 1 0 1.0 0.0 0.0 1.0 ""
-BCM_ESC_2: 837 8 ESC_VehSpd 36 13 0 0.1 0.0 0.0 240.0 ""
+BCM_ESC_2: 837 8 ESC_VehSpd 36 13 0 0.05625 0.0 0.0 240.0 ""
 
 BCM_VCU_2: 915 8 VCU_CompressorPwrLimit 21 6 0 100.0 0.0 0.0 6000.0 "w"
 BCM_VCU_2: 915 8 VCU_CompressorPwrLimitAct 32 1 0 1.0 0.0 0.0 1.0 ""
