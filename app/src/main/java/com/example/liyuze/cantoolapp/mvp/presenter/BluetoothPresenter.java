@@ -121,7 +121,7 @@ public class BluetoothPresenter {
         updateUserInterfaceTitle();
     }
 
-
+//
 
     /**
      * @Author : magic
