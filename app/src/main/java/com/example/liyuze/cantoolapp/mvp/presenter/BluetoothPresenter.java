@@ -26,23 +26,21 @@ import java.util.UUID;
 public class BluetoothPresenter {
 
 
-    public int sum(int x, int y){
-        return x+y;
-    }
 
+    //日志信息
     private static final String TAG = "BluetoothPresenter";
-
+    //uid
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-
+    //设备名
     private static final String ACCEPT_NAME = "BluetoothAccept";
 
 
     Handler handler;
     BluetoothAdapter mBluetoothAdapter;
 
-    private AcceptThread mAcceptThread;
-    private ConnectThread mConnectThread;
-    private ConnectedThread mConnectedThread;
+    private AcceptThread mAcceptThread;//监听线程
+    private ConnectThread mConnectThread;//链接线程
+    private ConnectedThread mConnectedThread;//已连接线程
     private int mState;
     private int mNewState;
 
@@ -129,6 +127,7 @@ public class BluetoothPresenter {
      * @Description :
      * Start the ConnectThread to initiate a connection to a remote device.
      * */
+    // 开启服务器链接模式
     public synchronized void connect(BluetoothDevice device) {
         Log.d(TAG, "connect to: " + device);
 
@@ -159,6 +158,7 @@ public class BluetoothPresenter {
      * @Description :
      * Start the ConnectedThread to begin managing a Bluetooth connection
      * */
+    //开启服务器已连接模式
     public synchronized void connected(BluetoothSocket socket, BluetoothDevice device) {
         Log.d(TAG, "connected, Socket");
 
@@ -318,6 +318,7 @@ public class BluetoothPresenter {
             BluetoothSocket socket = null;
 
             // Listen to the server socket if we're not connected
+
             while (mState != STATE_CONNECTED) {
                 try {
                     // This is a blocking call and will only return on a
