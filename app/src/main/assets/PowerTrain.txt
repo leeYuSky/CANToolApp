@@ -25,7 +25,7 @@ EngineData: 100 8 PetrolLevel 24 8 1 1.0 0.0 0.0 255.0 "l"
 EngineData: 100 8 EngPower 48 16 1 0.01 0.0 0.0 150.0 "kW"
 EngineData: 100 8 EngForce 32 16 1 1.0 0.0 0.0 0.0 "N"
 EngineData: 100 8 IdleRunning 23 1 1 1.0 0.0 0.0 0.0 ""
-EngineData: 100 8 EngTemp 16 7 1 2.0 -50.0 -50.0 150.0 "degC"
+EngineData: 100 8 EngTemp 16 7 1 2.0 -50.0 -50.0 150.0 "°C"
 EngineData: 100 8 EngSpeed 0 16 1 1.0 0.0 0.0 8000.0 "rpm"
 
 ABSdata: 201 6 AccelarationForce 32 16 1 1.0 -10000.0 0.0 0.0 "N"
