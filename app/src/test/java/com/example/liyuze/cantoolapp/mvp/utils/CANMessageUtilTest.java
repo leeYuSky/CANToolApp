@@ -6,6 +6,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.junit.Assert.*;
 
 /**
@@ -40,12 +43,14 @@ public class CANMessageUtilTest {
 
     @Test
     public void getId() throws Exception {
-
+        assertEquals(canMessageUtil.getId("T000000FFF"),255);
+        assertEquals(canMessageUtil.getId("t111800D9010000005300"),273);
+        assertEquals(canMessageUtil.getId("11180"),-2147483648);
     }
 
     @Test
     public void main() throws Exception {
-
+        canMessageUtil.main(null);
     }
     @Test
     public void getValue() throws Exception {
@@ -267,7 +272,49 @@ s1 = new signal("VCU_CompressorPwrLimitAct",32,1,0,1.0,0.0,0.0,1.0,"");
         s1 = new signal("PTCActst",26,3,0,1.0,0.0,0.0,7.0,"");
         assertEquals(canMessageUtil.getValue(s1, canMessageUtil.parseHexToBinary("0453270200000000")),2,0);
 
+        s1 = new signal("Voltage",48,10,1,0.1,0.0,0.0,102.3,"");
+        assertEquals(canMessageUtil.getValue(s1, canMessageUtil.parseHexToBinary("00D9010000005300")),8.3,0);
+
+
 
     }
+    @Test
+    public void parseBinaryToHex() throws Exception {
+
+        assertEquals(canMessageUtil.parseBinaryToHex("0000"),"0");
+        assertEquals(canMessageUtil.parseBinaryToHex("0001"),"1");
+        assertEquals(canMessageUtil.parseBinaryToHex("0010"),"2");
+        assertEquals(canMessageUtil.parseBinaryToHex("0011"),"3");
+        assertEquals(canMessageUtil.parseBinaryToHex("0100"),"4");
+        assertEquals(canMessageUtil.parseBinaryToHex("0101"),"5");
+        assertEquals(canMessageUtil.parseBinaryToHex("0110"),"6");
+        assertEquals(canMessageUtil.parseBinaryToHex("0111"),"7");
+        assertEquals(canMessageUtil.parseBinaryToHex("1000"),"8");
+        assertEquals(canMessageUtil.parseBinaryToHex("1001"),"9");
+        assertEquals(canMessageUtil.parseBinaryToHex("1010"),"A");
+        assertEquals(canMessageUtil.parseBinaryToHex("1011"),"B");
+        assertEquals(canMessageUtil.parseBinaryToHex("1100"),"C");
+        assertEquals(canMessageUtil.parseBinaryToHex("1101"),"D");
+        assertEquals(canMessageUtil.parseBinaryToHex("1110"),"E");
+        assertEquals(canMessageUtil.parseBinaryToHex("1111"),"F");
+
+
+
+    }
+    @Test
+    public void MessageParse() throws Exception {
+
+//        Map<String, Double> result = null;
+        assertNotNull(canMessageUtil.MessageParse("t111800D9010000005300"));
+        assertNull(canMessageUtil.MessageParse("T111800D9010000005300"));
+
+
+    }
+    @Test
+    public void isHaveSpeed() throws Exception {
+        assertTrue(canMessageUtil.isHaveSpeed("t111800D90100000053000000\t"));
+        assertTrue(canMessageUtil.isHaveSpeed("T11100000800D90100000053000000\t"));
+    }
+
 
 }
